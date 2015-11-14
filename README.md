@@ -9,4 +9,5 @@ Command Line Interface for real-debrid.com
 
 ## Usage ##
 
-`rdcli <link>`
+`rdcli <link> .`
+
