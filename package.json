@@ -1,6 +1,6 @@
 {
   "name": "rdcli",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Command Line Interface for real-debrid.com",
   "homepage": "https://github.com/jcherqui/rdcli",
   "repository": {
@@ -16,7 +16,7 @@
   },
   "dependencies": {
       "prompt": "latest",
-      "real-debrid": "latest",
+      "real-debrid": "git+https://github.com/jcherqui/node-real-debrid.git",
       "single-line-log": "latest"
   }
 }
