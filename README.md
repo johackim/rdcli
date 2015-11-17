@@ -11,3 +11,10 @@ Command Line Interface for real-debrid.com
 
 `rdcli <link> .`
 
+License
+----
+
+MIT
+
+**Free Software, Hell Yeah!**
+
