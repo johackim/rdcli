@@ -1,6 +1,6 @@
 {
   "name": "rdcli",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Command Line Interface for real-debrid.com",
   "homepage": "https://github.com/jcherqui/rdcli",
   "repository": {
@@ -18,5 +18,15 @@
       "prompt": "latest",
       "real-debrid": "git+https://github.com/jcherqui/node-real-debrid.git",
       "single-line-log": "latest"
-  }
+  },
+  "keywords": [
+      "real-debrid",
+      "real-debrid.com",
+      "debrid",
+      "débrideur",
+      "uptobox",
+      "megaupload",
+      "rdcli",
+      "cli"
+  ]
 }
