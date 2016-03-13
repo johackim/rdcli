@@ -45,7 +45,8 @@ prompt.start();
 prompt.delimiter = "";
 prompt.message = null;
 prompt.colors = false;
-prompt.get({
+
+const schema = {
     properties: {
         link: {
             require: true,
@@ -54,8 +55,14 @@ prompt.get({
             message: 'Link url is invalid'
         }
     }
-}, function (err, result) {
-    request.post(ENDPOINT + "/unrestrict/link?auth_token="+ AUTH_TOKEN, {form:{link:result.link}}, function (error, response, body){
+};
+
+if (!AUTH_TOKEN) {
+    schema.properties.token = { description: "Token:" };
+}
+
+prompt.get(schema, function (err, result) {
+    request.post(ENDPOINT + "/unrestrict/link?auth_token="+ ((AUTH_TOKEN) ? AUTH_TOKEN : result.token), {form:{link:result.link}}, function (error, response, body){
         body = JSON.parse(body);
 
         if (body.error) {
@@ -66,6 +73,12 @@ prompt.get({
                     break;
                 case 16:
                     console.log("Unsupported hoster");
+                    break;
+                case 8:
+                    console.log('Bad token, get your token API : https://real-debrid.com/apitoken')
+                    break;
+                case 1:
+                    console.log('Missing parameter');
                     break;
                 default:
                     console.log(body.error);
