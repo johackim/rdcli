@@ -1,18 +1,23 @@
 Rdcli
-=======
+===
 
 Command Line Interface for real-debrid.com
 
-## Installation ##
+## Installation
 
 `npm i -g rdcli`
 
-## Usage ##
+## Usage
 
-`rdcli <link> .`
+`rdcli`
+
+## TODO
+
+- multi-link
+- streaming
 
 License
-----
+---
 
 MIT
 
