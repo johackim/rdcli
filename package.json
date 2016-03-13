@@ -1,6 +1,6 @@
 {
   "name": "rdcli",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Command Line Interface for real-debrid.com",
   "homepage": "https://github.com/jcherqui/rdcli",
   "repository": {
@@ -12,12 +12,19 @@
   },
   "preferGlobal": true,
   "bin": {
-    "rdcli": "lib/bin.js"
+    "rdcli": "index.js"
   },
+  "author": "jcherqui",
+  "license": "ISC",
   "dependencies": {
-      "prompt": "latest",
-      "real-debrid": "git+https://github.com/jcherqui/node-real-debrid.git",
-      "single-line-log": "latest"
+      "prompt": "^1.0.0",
+      "single-line-log": "^1.1.1",
+      "request": "^2.69.0",
+      "request-progress": "^0.3.0",
+      "humanize": "^0.0.9",
+      "fs": "^0.0.2",
+      "url": "^0.11.0",
+      "log": "^1.4.0"
   },
   "keywords": [
       "real-debrid",
