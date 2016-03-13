@@ -15,7 +15,7 @@
     "rdcli": "index.js"
   },
   "author": "jcherqui",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
       "prompt": "^1.0.0",
       "single-line-log": "^1.1.1",
