@@ -9,12 +9,14 @@ Command Line Interface for real-debrid.com
 
 ## Usage
 
-`rdcli`
+`rdcli <url>`
 
 ## TODO
 
-- multi-link
-- streaming
+- add multi-link
+- add streaming
+- add torrent
+- add http://vorpal.js.org/
 
 License
 ---
@@ -22,4 +24,3 @@ License
 MIT
 
 **Free Software, Hell Yeah!**
-
