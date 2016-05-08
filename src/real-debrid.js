@@ -230,7 +230,12 @@ class RealDebrid {
         const filename = unescape(url.parse(link).pathname.split('/').pop());
         const destination = `${process.cwd()}/${filename}`;
 
-        const progressLink = progress(request(link), {
+        const progressLink = progress(request(link, (error, response) => {
+            if (response.statusCode === 404) {
+                console.error('Error during download file');
+                process.exit();
+            }
+        }), {
             throttle: 2000,
             delay: config.requestDelay,
         });
