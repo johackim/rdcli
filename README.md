@@ -1,4 +1,4 @@
-Rdcli
+Rdcli [![Build Status](https://travis-ci.org/jcherqui/rdcli.svg?branch=master)](https://travis-ci.org/jcherqui/rdcli/)
 ===
 
 Command Line Interface for real-debrid.com
