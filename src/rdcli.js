@@ -13,7 +13,6 @@ program
     .description('Download torrent and ddl')
     .usage('<url|magnet|torrent>')
     .action((arg) => co(function*action() {
-        let unrestrictLink;
         const api = new RealDebrid();
 
         const connect = function*connect() {
@@ -22,25 +21,29 @@ program
             yield api.connect(username, password);
         };
 
+        let link;
         if (arg.match(/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w\? \.-]*)*\/?$/)) {
             yield connect();
-            unrestrictLink = yield api.unrestrictLink(arg);
-        } else if (arg.match(/magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{20,50}/i) || fs.existsSync(arg)) {
+            link = arg;
+        } else if (arg.match(/^magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{20,50}/i)) {
             yield connect();
-            const link = yield api.convertToDdl(arg);
-            unrestrictLink = yield api.unrestrictLink(link);
+            link = yield api.convertTorrent(arg);
+        } else if (fs.existsSync(arg)) {
+            yield connect();
+            link = yield api.convertTorrent(arg);
         } else {
             console.log('Usage: rdcli <url|magnet|torrent>');
             process.exit();
         }
 
+        const unrestrictLink = yield api.unrestrictLink(link);
         yield api.download(unrestrictLink, (res) => {
             if (!isNaN(res.percent)) {
                 log.stdout(`Download: ${res.percent}% Speed: ${res.mbps}Mbps ${res.bytesWriting}/${res.totalSize}`);
             } else if (res === 'end') {
-                console.log('File downloaded.');
+                console.log('\nFile downloaded.');
             } else {
-                console.log(`Error: ${res}`);
+                console.log(`\nError: ${res}`);
             }
         });
     })).parse(process.argv);
