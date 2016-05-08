@@ -1,6 +1,6 @@
 {
   "name": "rdcli",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "Command Line Interface for real-debrid.com",
   "homepage": "https://github.com/jcherqui/rdcli",
   "repository": {
@@ -12,7 +12,7 @@
   },
   "preferGlobal": true,
   "scripts": {
-    "start": "./node_modules/.bin/babel-node src/rdcli.js",
+    "start": "NODE_ENV=dev ./node_modules/.bin/babel-node src/rdcli.js",
     "prepublish": "make build"
   },
   "bin": {

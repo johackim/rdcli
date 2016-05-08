@@ -105,6 +105,7 @@ describe('rdcli', () => {
 
     describe('torrent', () => {
         it('should be add torrent', coCb(function*() {
+            server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
             server.put('/torrents/addTorrent', (req, res) => res.json({
                 id: 'JHGTA554AZEDF',
                 uri: 'https://api.real-debrid.com/torrents/info/JHGTA554AZEDF',
@@ -116,6 +117,7 @@ describe('rdcli', () => {
         }));
 
         it('should be add magnet', coCb(function*() {
+            server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
             server.post('/torrents/addMagnet', (req, res) => res.json({
                 id: 'NLBUIGAEOXYYC',
                 uri: 'https://api.real-debrid.com/torrents/info/NLBUIGAEOXYYC',
@@ -136,19 +138,14 @@ describe('rdcli', () => {
 
         it('should be get torrent informations', coCb(function*() {
             server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
-            server.post('/torrents/addMagnet', (req, res) => res.json({
-                id: 'JKLJOIIA4545Z',
-                uri: 'https://api.real-debrid.com/torrents/info/JKLJOIIA4545Z',
-            }));
 
-            const magnet = 'magnet:?xt=urn:btih:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
-            const id = yield api.addMagnet(magnet);
+            const id = 'JKLJOIIA4545Z';
             const infos = yield api.getInfosTorrent(id);
             assert.equal(infos.filename, 'test.rar');
         }));
 
         it('should be convert magnet to ddl file', coCb(function*() {
-            server.post('/torrents/selectFiles/:id');
+            server.post('/torrents/selectFiles/:id', (req, res) => res.json());
             server.get('/torrents', (req, res) => res.json(torrentList));
             server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
             server.post('/torrents/addMagnet', (req, res) => res.json({
@@ -157,12 +154,12 @@ describe('rdcli', () => {
             }));
 
             const magnet = 'magnet:?xt=urn:btih:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
-            const link = yield api.convertToDdl(magnet);
+            const link = yield api.convertTorrent(magnet);
             assert.equal(link, 'http://uptobox.com/xxxxxxxxxxxx');
         }));
 
         it('should be convert torrent to ddl file', coCb(function*() {
-            server.post('/torrents/selectFiles/:id');
+            server.post('/torrents/selectFiles/:id', (req, res) => res.json());
             server.get('/torrents', (req, res) => res.json(torrentList));
             server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
             server.put('/torrents/addTorrent', (req, res) => res.json({
@@ -171,7 +168,7 @@ describe('rdcli', () => {
             }));
 
             const torrentFile = `${__dirname}/fixtures/test.torrent`;
-            const link = yield api.convertToDdl(torrentFile);
+            const link = yield api.convertTorrent(torrentFile);
             assert.equal(link, 'http://uptobox.com/xxxxxxxxxxxx');
         }));
     });
