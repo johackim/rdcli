@@ -148,15 +148,15 @@ class RealDebrid {
 
         yield this.selectFile(idTorrent);
 
-        let link;
+        let link = [];
         let status = 'wait';
         let progressConvert = 0;
-        while (!link) {
+        while (!link.length) {
             const infos = yield this.getInfosTorrent(idTorrent);
             status = infos.status;
-            link = infos.links.toString();
+            link = infos.links;
             progressConvert = Number(infos.progress);
-            log.stdout(`Convert torrent progress: ${progressConvert}% (${status})`);
+            log.stdout(`Convert torrent progress: ${progressConvert}% (${status})\n`);
 
             if (infos.status === 'error') {
                 console.error(chalk.red('Error: convert failed'));
@@ -164,12 +164,12 @@ class RealDebrid {
             }
         }
 
-        if (!link.match(/^http/)) {
+        if (!link.toString().match(/^http/)) {
             console.error(chalk.red('Error: convert failed'));
             process.exit();
         }
 
-        return link;
+        return link.toString();
     }
 
     * addTorrent(torrent) {
@@ -230,38 +230,30 @@ class RealDebrid {
         const filename = unescape(url.parse(link).pathname.split('/').pop());
         const destination = `${process.cwd()}/${filename}`;
 
-        const progressLink = progress(request(link, (error, response) => {
-            if (response.statusCode === 404) {
-                console.error('Error during download file');
-                process.exit();
-            }
-        }), {
+        const progressLink = progress(request(link), {
             throttle: 2000,
-            delay: config.requestDelay,
+            delay: 1000,
         });
 
-        let lastBytesWriting;
-        progressLink.on('progress', (state) => {
-            const chunkSize = state.received - lastBytesWriting;
-            lastBytesWriting = state.received;
-
-            if (state.percent === 100) {
-                callback('end');
-            }
-
-            callback({
-                percent: state.percent,
-                mbps: humanize.filesize(chunkSize),
-                totalSize: humanize.filesize(state.total),
-                bytesWriting: humanize.filesize(state.received),
-            });
-        });
+        progressLink.on('progress', (state) => callback({
+            percent: humanize.numberFormat(state.percentage * 100, 1),
+            mbps: humanize.filesize(state.speed),
+            totalSize: humanize.filesize(state.size.total),
+            bytesWriting: humanize.filesize(state.size.transferred),
+            remaining: Math.round(state.time.remaining),
+        }));
 
         progressLink.on('error', (err) => {
             callback(err);
         });
 
-        progressLink.on('close', () => {
+        progressLink.on('end', () => {
+            const stats = fs.statSync(destination);
+            if (stats.size < 3000) {
+                console.error(chalk.red('Error, retry...'));
+                process.exit();
+            }
+
             callback('end');
         });
 

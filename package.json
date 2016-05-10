@@ -1,6 +1,6 @@
 {
   "name": "rdcli",
-  "version": "1.0.11",
+  "version": "1.0.13",
   "description": "Command Line Interface for real-debrid.com",
   "homepage": "https://github.com/jcherqui/rdcli",
   "repository": {
@@ -38,7 +38,7 @@
     "ora": "^0.2.1",
     "prompt": "^1.0.0",
     "request": "^2.69.0",
-    "request-progress": "^0.3.0",
+    "request-progress": "^2.0.1",
     "single-line-log": "^1.1.1",
     "url": "^0.11.0"
   },
@@ -59,6 +59,8 @@
     "uptobox",
     "megaupload",
     "rdcli",
+    "torrent",
+    "magnet",
     "cli"
   ]
 }
