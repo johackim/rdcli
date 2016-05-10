@@ -1,5 +1,8 @@
-Rdcli [![npm version](https://badge.fury.io/js/rdcli.svg)](https://badge.fury.io/js/rdcli) [![Build Status](https://travis-ci.org/jcherqui/rdcli.svg?branch=master)](https://travis-ci.org/jcherqui/rdcli/)
+Rdcli
 ===
+
+[![npm version](https://badge.fury.io/js/rdcli.svg)](https://badge.fury.io/js/rdcli)
+[![Build Status](https://travis-ci.org/jcherqui/rdcli.svg?branch=master)](https://travis-ci.org/jcherqui/rdcli/)
 
 > A simple CLI tool to unrestrict links with real-debrid.com
 

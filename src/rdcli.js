@@ -39,11 +39,11 @@ program
         const unrestrictLink = yield api.unrestrictLink(link);
         yield api.download(unrestrictLink, (res) => {
             if (!isNaN(res.percent)) {
-                log.stdout(`Download: ${res.percent}% Speed: ${res.mbps}Mbps ${res.bytesWriting}/${res.totalSize}`);
+                log.stdout(`Download: ${res.percent}% Speed: ${res.mbps}Mbps ${res.bytesWriting}/${res.totalSize} Remaining: ${res.remaining}sec\n`);
             } else if (res === 'end') {
-                console.log('\nFile downloaded.');
+                console.log('File downloaded.');
             } else {
-                console.log(`\nError: ${res}`);
+                console.log(`Error: ${res}`);
             }
         });
     })).parse(process.argv);
