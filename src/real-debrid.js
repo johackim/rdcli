@@ -94,7 +94,7 @@ class RealDebrid {
                         const bodyParse = JSON.parse(body);
 
                         if (!bodyParse || bodyParse.error) {
-                            console.log(chalk.red(`Error: ${bodyParse.error}`));
+                            console.log(chalk.red('Error: no files to select'));
                             process.exit();
                         }
                     }
@@ -203,7 +203,7 @@ class RealDebrid {
         const id = yield new Promise(resolve => {
             request.post(
                 `${config.apiEndpoint}/torrents/addMagnet?auth_token=${this.token}`,
-                { form: { magnet, host: 'uptobox.com' } },
+                { form: { magnet: encodeURI(magnet), host: 'uptobox.com' } },
                 (error, response, body) => {
                     const bodyParse = JSON.parse(body);
 
@@ -251,6 +251,9 @@ class RealDebrid {
             const stats = fs.statSync(destination);
             if (stats.size < 3000) {
                 console.error(chalk.red('Error, retry...'));
+                if (process.env.NODE_ENV !== 'dev') {
+                    fs.unlink(destination);
+                }
                 process.exit();
             }
 
