@@ -6,7 +6,7 @@ Rdcli
 
 > A simple CLI tool to unrestrict links with real-debrid.com
 
-Download links, magnet and torrent files.
+Download links, magnets and torrent files.
 
 ## Installation
 
@@ -27,6 +27,12 @@ Download links, magnet and torrent files.
 ### Download torrent file
 
 `rdcli Back.to.the.Future.Trilogy.1080p.BluRay.x264.torrent`
+
+# TODO
+
+- [ ] Handle Ctrl+u and backspace in prompt password
+- [ ] Add [ora](https://www.npmjs.com/package/ora) spinner
+- [ ] Update text errors
 
 License
 ---
