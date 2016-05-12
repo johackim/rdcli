@@ -10,7 +10,7 @@ import fs from 'fs';
 
 program
     .version(pjson.version)
-    .description('Download torrent and ddl')
+    .description('Download links, magnets and torrent files.')
     .usage('<url|magnet|torrent>')
     .action((arg) => co(function*action() {
         const api = new RealDebrid();
