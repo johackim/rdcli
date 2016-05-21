@@ -3,6 +3,7 @@ Rdcli
 
 [![npm version](https://badge.fury.io/js/rdcli.svg)](https://badge.fury.io/js/rdcli)
 [![Build Status](https://travis-ci.org/jcherqui/rdcli.svg?branch=master)](https://travis-ci.org/jcherqui/rdcli/)
+[![npm download](https://img.shields.io/npm/dt/rdcli.svg)](https://www.npmjs.com/package/rdcli)
 
 > A simple CLI tool to unrestrict links with real-debrid.com
 
@@ -33,6 +34,7 @@ Download links, magnets and torrent files.
 - [ ] Handle Ctrl+u and backspace in prompt password
 - [ ] Add [ora](https://www.npmjs.com/package/ora) spinner
 - [ ] Update text errors
+- [ ] Handle multi-link
 
 License
 ---
