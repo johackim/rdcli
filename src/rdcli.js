@@ -4,7 +4,7 @@ import RealDebrid from './real-debrid';
 import pjson from '../package.json';
 import program from 'commander';
 import prompt from 'co-prompt';
-import log from 'single-line-log';
+import ora from 'ora';
 import co from 'co';
 import fs from 'fs';
 
@@ -37,19 +37,23 @@ program
         }
 
         const unrestrictLink = yield api.unrestrictLink(link);
+        console.log(`Start download : ${link}`);
         yield api.waitDuringScan(link);
 
-        console.log(`Start download : ${link}`);
+        const spinner = ora('Download: 0.0% Speed: 0Mbps').start();
         yield api.download(unrestrictLink, (res) => {
             if (res.percent) {
-                log.stdout(`Download: ${res.percent}% Speed: ${res.mbps}Mbps ${res.bytesWriting}/${res.totalSize} Remaining: ${res.remaining}sec\n`);
+                spinner.text = `Download: ${res.percent}% Speed: ${res.mbps}Mbps ${res.bytesWriting}/${res.totalSize} Remaining: ${res.remaining}sec`;
             } else if (res === 'end') {
+                spinner.stop();
                 console.log('File downloaded.');
             } else {
+                spinner.stop();
                 console.log(`Error: ${res}`);
             }
         });
-    })).parse(process.argv);
+    }))
+    .parse(process.argv);
 
 if (!process.argv.slice(2).length) {
     program.outputHelp();

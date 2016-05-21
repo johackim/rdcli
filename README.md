@@ -32,7 +32,6 @@ Download links, magnets and torrent files.
 # TODO
 
 - [ ] Handle Ctrl+u and backspace in prompt password
-- [ ] Add [ora](https://www.npmjs.com/package/ora) spinner
 - [ ] Update text errors
 - [ ] Handle multi-link
 

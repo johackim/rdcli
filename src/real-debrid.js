@@ -2,7 +2,6 @@ import humanize from 'humanize';
 import request from 'request';
 import url from 'url';
 import progress from 'request-progress';
-import log from 'single-line-log';
 import chalk from 'chalk';
 import fs from 'fs';
 import ora from 'ora';
@@ -158,21 +157,28 @@ class RealDebrid {
         let link = [];
         let status = 'wait';
         let progressConvert = 0;
+        const spinner = ora(`Convert torrent progress: ${progressConvert}% (${status})`).start();
         while (!link.length) {
             const infos = yield this.getInfosTorrent(idTorrent);
             status = infos.status;
             link = infos.links;
             progressConvert = Number(infos.progress);
-            log.stdout(`Convert torrent progress: ${progressConvert}% (${status})\n`);
+            spinner.text = `Convert torrent progress: ${progressConvert}% (${status})`;
 
             if (infos.status === 'error') {
                 console.error(chalk.red('Error: convert failed'));
                 process.exit();
             }
         }
+        spinner.stop();
 
         if (!link.toString().match(/^http/)) {
             console.error(chalk.red('Error: convert failed'));
+            process.exit();
+        }
+
+        if (link.length > 1) {
+            console.log(`Unfortunately rdcli cannot download split files : \n${link.join('\n')}`);
             process.exit();
         }
 
@@ -233,21 +239,24 @@ class RealDebrid {
         return id;
     }
 
-    * waitDuringScan(link, loaderStart = false) {
+    * waitDuringScan(link) {
+        const message = 'Please wait until the file has been scanned by our anti-virus';
+        if (!this.spinner) {
+            this.spinner = ora(message).start();
+        }
+
         const content = yield new Promise(resolve => {
             setTimeout(() => {
                 request(link, (error, response, body) => {
                     resolve(body);
                 });
-            }, 5000);
+            }, config.requestDelay);
         });
 
-        const message = 'Please wait until the file has been scanned by our anti-virus';
         if (content.match(new RegExp(message))) {
-            if (!loaderStart) {
-                ora(message).start();
-            }
-            yield this.waitDuringScan(link, true);
+            yield this.waitDuringScan(link);
+        } else {
+            this.spinner.stop();
         }
     }
 
