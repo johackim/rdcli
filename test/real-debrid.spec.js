@@ -92,15 +92,42 @@ describe('rdcli', () => {
         assert.equal(unrestrictLink, 'https://100.download.real-debrid.com/d/4ALWGL4BN4C4G/test.rar');
     }));
 
-    it('should be download file', coCb(function*() {
-        server.get('/test.json', (req, res) => {
-            res.json({ test: 'test' });
+    it('should be retry 5 times if download failed', done => {
+        api.RETRY_DELAY = 0;
+        api.retry = 0;
+
+        server.get('/test.json', (req, res) => res.status(500).json({ response: 'error' }));
+
+        const link = `${config.apiBaseUrl}/test.json`;
+        api.download(link, res => {
+            if (res === 'error') {
+                fs.unlink(`${process.cwd()}/test.json`);
+                assert.equal(api.retry, 5);
+                done();
+            }
         });
+    });
+
+    it('should be download file', done => {
+        api.RETRY_DELAY = 0;
+        api.retry = 0;
+
+        server.get('/test.json', (req, res) => res.json({ test: 'test' }));
 
         const url = `${config.apiBaseUrl}/test.json`;
-        api.download(url);
-        assert.isTrue(fs.existsSync(`${process.cwd()}/test.json`));
-        fs.unlink(`${process.cwd()}/test.json`);
+        api.download(url, res => {
+            if (res === 'end') {
+                assert.isTrue(fs.existsSync(`${process.cwd()}/test.json`));
+                fs.unlink(`${process.cwd()}/test.json`);
+                done();
+            }
+        });
+    });
+
+    it.skip('should be wait during anti-virus scan', coCb(function*() {
+        server.get('/link', (req, res) => res.json({ message: 'Please wait until the file has been scanned by our anti-virus' }));
+        const link = `${config.apiBaseUrl}/link`;
+        yield api.waitDuringScan(link);
     }));
 
     describe('torrent', () => {

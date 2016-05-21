@@ -5,12 +5,19 @@ import progress from 'request-progress';
 import log from 'single-line-log';
 import chalk from 'chalk';
 import fs from 'fs';
+import ora from 'ora';
 import config from 'config';
 import 'babel-polyfill';
 
-const SIZE_ID = 13;
-
 class RealDebrid {
+
+    constructor() {
+        this.SIZE_ID = 13;
+        this.MAX_RETRY = 5;
+        this.RETRY_DELAY = 30 * 1000;
+        this.MIN_FILESIZE = 3000;
+        this.retry = 0;
+    }
 
     * connect(username, password) {
         return new Promise((resolve) => {
@@ -180,7 +187,7 @@ class RealDebrid {
                 (error, response, body) => {
                     const bodyParse = JSON.parse(body);
 
-                    if (!bodyParse || bodyParse.error || bodyParse.id.length !== SIZE_ID) {
+                    if (!bodyParse || bodyParse.error || bodyParse.id.length !== this.SIZE_ID) {
                         console.error(chalk.red('Error: add torrent failed'));
                         process.exit();
                     }
@@ -207,7 +214,7 @@ class RealDebrid {
                 (error, response, body) => {
                     const bodyParse = JSON.parse(body);
 
-                    if (!bodyParse || bodyParse.error || bodyParse.id.length !== SIZE_ID) {
+                    if (!bodyParse || bodyParse.error || bodyParse.id.length !== this.SIZE_ID) {
                         console.error(chalk.red('Error: add magnet failed'));
                         process.exit();
                     }
@@ -226,9 +233,27 @@ class RealDebrid {
         return id;
     }
 
+    * waitDuringScan(link, loaderStart = false) {
+        const content = yield new Promise(resolve => {
+            setTimeout(() => {
+                request(link, (error, response, body) => {
+                    resolve(body);
+                });
+            }, 5000);
+        });
+
+        const message = 'Please wait until the file has been scanned by our anti-virus';
+        if (content.match(new RegExp(message))) {
+            if (!loaderStart) {
+                ora(message).start();
+            }
+            yield this.waitDuringScan(link, true);
+        }
+    }
+
     download(link, callback) {
         const filename = unescape(url.parse(link).pathname.split('/').pop());
-        const destination = `${process.cwd()}/${filename}`;
+        const file = `${process.cwd()}/${filename}`;
 
         const progressLink = progress(request(link), {
             throttle: 2000,
@@ -243,24 +268,31 @@ class RealDebrid {
             remaining: Math.round(state.time.remaining),
         }));
 
-        progressLink.on('error', (err) => {
-            callback(err);
-        });
+        progressLink.on('error', () => callback('error'));
 
         progressLink.on('end', () => {
-            const stats = fs.statSync(destination);
-            if (stats.size < 3000) {
-                console.error(chalk.red('Error, retry...'));
-                if (process.env.NODE_ENV !== 'dev') {
-                    fs.unlink(destination);
+            if (fs.statSync(file).size < this.MIN_FILESIZE && fs.readFileSync(file, 'utf8').match(/error/)) {
+                if (this.retry < this.MAX_RETRY) {
+                    this.retry++;
+                    console.log(`Error, retry download in ${this.RETRY_DELAY / 1000}s...`);
+                    setTimeout(() => {
+                        this.download(link, callback);
+                    }, this.RETRY_DELAY);
+                } else {
+                    const message = fs.readFileSync(file, 'utf8').match(/danger">([^"]+)<\/div>/);
+                    if (message) {
+                        const error = message[1].replace(/<br\/>/gi, '\n');
+                        console.log(`${error}\n`);
+                        console.log('Contact us on https://real-debrid.com/support');
+                    }
+                    callback('error');
                 }
-                process.exit();
+            } else {
+                callback('end');
             }
-
-            callback('end');
         });
 
-        progressLink.pipe(fs.createWriteStream(destination));
+        progressLink.pipe(fs.createWriteStream(file));
     }
 }
 
