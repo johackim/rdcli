@@ -37,8 +37,11 @@ program
         }
 
         const unrestrictLink = yield api.unrestrictLink(link);
+        yield api.waitDuringScan(link);
+
+        console.log(`Start download : ${link}`);
         yield api.download(unrestrictLink, (res) => {
-            if (!isNaN(res.percent)) {
+            if (res.percent) {
                 log.stdout(`Download: ${res.percent}% Speed: ${res.mbps}Mbps ${res.bytesWriting}/${res.totalSize} Remaining: ${res.remaining}sec\n`);
             } else if (res === 'end') {
                 console.log('File downloaded.');
