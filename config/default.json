@@ -1,6 +1,6 @@
 {
-    "apiBaseUrl": "https://api.real-debrid.com/",
+    "apiBaseUrl": "https://api.real-debrid.com",
     "apiEndpoint": "https://api.real-debrid.com/rest/1.0",
     "clientId": "MPCF6OE5DLDM2",
-    "requestDelay": 1000
+    "requestDelay": 2000
 }
