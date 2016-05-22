@@ -7,6 +7,10 @@ import fs from 'fs';
 import ora from 'ora';
 import config from 'config';
 import 'babel-polyfill';
+import debug from 'debug';
+import http from './http';
+
+const log = debug('app');
 
 class RealDebrid {
 
@@ -19,129 +23,115 @@ class RealDebrid {
     }
 
     * connect(username, password) {
-        return new Promise((resolve) => {
-            request.post(
-                `${config.apiBaseUrl}/oauth/v2/token`,
-                { form: { username, password, client_id: config.clientId, grant_type: 'password' } },
-                (error, response, body) => {
-                    const bodyParse = JSON.parse(body);
+        log('connect to real-debrid.com');
 
-                    if (!bodyParse || bodyParse.error) {
-                        console.error(chalk.red(bodyParse.error));
-                        process.exit();
-                    }
+        const data = yield http.post(`${config.apiBaseUrl}/oauth/v2/token`,
+            { form: {
+                username,
+                password,
+                client_id: config.clientId,
+                grant_type: 'password',
+            } }
+        );
 
-                    console.log(`${chalk.cyan('Info:')} Login Successful`);
-                    this.token = bodyParse.access_token;
-                    resolve(this.token);
-                }
-            );
-        });
+        if (data.access_token) {
+            console.log(`${chalk.cyan('Info:')} Login Successful`);
+            this.token = data.access_token;
+        }
     }
 
     * unrestrictLink(link) {
-        return new Promise((resolve) => {
-            request.post(
-                `${config.apiEndpoint}/unrestrict/link?auth_token=${this.token}`,
-                { form: { link } },
-                (error, response, body) => {
-                    const bodyParse = JSON.parse(body);
-
-                    if (!bodyParse || bodyParse.error) {
-                        console.log(chalk.red(`Error: ${bodyParse.error}`));
-                        process.exit();
-                    }
-
-                    resolve(bodyParse.download);
-                }
-            );
-        });
+        log(`unrestrict link ${link}`);
+        const data = yield http.post(
+            `${config.apiEndpoint}/unrestrict/link?auth_token=${this.token}`,
+            { form: { link } }
+        );
+        return data.download;
     }
 
     * getInfosTorrent(id) {
-        return new Promise(resolve => {
-            setTimeout(() => {
-                request(`${config.apiEndpoint}/torrents/info/${id}?auth_token=${this.token}`, (error, response, body) => {
-                    const bodyParse = JSON.parse(body);
-
-                    if (!bodyParse || bodyParse.error) {
-                        console.log(chalk.red(`Error: ${bodyParse.error}`));
-                        process.exit();
-                    }
-
-                    resolve(bodyParse);
-                });
-            }, config.requestDelay);
-        });
+        log(`get infos torrent ${id}`);
+        const data = yield http.get(
+            `${config.apiEndpoint}/torrents/info/${id}?auth_token=${this.token}`,
+            config.requestDelay
+        );
+        return data;
     }
 
     * getTorrentList() {
-        return new Promise(resolve => {
-            request(`${config.apiEndpoint}/torrents?auth_token=${this.token}`, (error, response, body) => {
-                const bodyParse = JSON.parse(body);
-
-                if (!bodyParse || bodyParse.error) {
-                    console.log(chalk.red(`Error: ${bodyParse.error}`));
-                    process.exit();
-                }
-
-                resolve(bodyParse);
-            });
-        });
+        log('get torrent list');
+        return yield http.get(`${config.apiEndpoint}/torrents?auth_token=${this.token}`);
     }
 
     * selectFile(id, files = 'all') {
-        return new Promise(resolve => {
-            request.post(
-                `${config.apiEndpoint}/torrents/selectFiles/${id}?auth_token=${this.token}`,
-                { form: { files } },
-                (error, response, body) => {
-                    if (body) {
-                        const bodyParse = JSON.parse(body);
-
-                        if (!bodyParse || bodyParse.error) {
-                            console.log(chalk.red('Error: no files to select'));
-                            process.exit();
-                        }
-                    }
-
-                    resolve(true);
-                }
-            );
-        });
+        log(`select file ${id}`);
+        yield http.post(
+            `${config.apiEndpoint}/torrents/selectFiles/${id}?auth_token=${this.token}`,
+            { form: { files } }
+        );
     }
 
-    * deleteTorrent(id) {
-        return new Promise(resolve => {
+    * addTorrent(torrent) {
+        log(`add torrent ${torrent}`);
+        const data = yield http.put(
+            `${config.apiEndpoint}/torrents/addTorrent?auth_token=${this.token}`,
+            torrent
+        );
+
+        if (!data.id || data.id.length !== this.SIZE_ID) {
+            console.error(chalk.red('Error: add torrent failed'));
+            process.exit();
+        }
+
+        const infos = yield this.getInfosTorrent(data.id);
+        if (!infos.filename) {
+            console.error(chalk.red('Error: add torrent failed'));
+            process.exit();
+        }
+
+        return data.id;
+    }
+
+    * addMagnet(magnet) {
+        log(`add magnet ${magnet}`);
+        const data = yield http.post(
+            `${config.apiEndpoint}/torrents/addMagnet?auth_token=${this.token}`,
+            { form: { magnet: encodeURI(magnet), host: 'uptobox.com' } }
+        );
+
+        const infos = yield this.getInfosTorrent(data.id);
+        if (!infos.filename) {
+            console.error(chalk.red('Error: add magnet failed'));
+            process.exit();
+        }
+
+        return data.id;
+    }
+
+    * waitDuringScan(link) {
+        log(`scan anti-virus ${link}`);
+        const message = 'Please wait until the file has been scanned by our anti-virus';
+        if (!this.spinner) {
+            this.spinner = ora(message).start();
+        }
+
+        const content = yield new Promise(resolve => {
             setTimeout(() => {
-                request.delete(
-                    `${config.apiEndpoint}/torrents/delete/${id}?auth_token=${this.token}`,
-                    {},
-                    (error, response, body) => {
-                        if (body) {
-                            const bodyParse = JSON.parse(body);
-
-                            if (!bodyParse || bodyParse.error) {
-                                console.log(chalk.red(`Error: ${bodyParse.error}`));
-                                process.exit();
-                            }
-                        }
-
-                        resolve(true);
-                    }
-                );
+                request(link, (error, response, body) => {
+                    resolve(body);
+                });
             }, config.requestDelay);
         });
-    }
 
-    * removeHistory() {
-        const torrents = yield this.getTorrentList();
-        for (let i = 0; i < torrents.length; i++) {
-            yield this.deleteTorrent(torrents[i].id);
+        if (content.match(new RegExp(message))) {
+            yield this.waitDuringScan(link);
+        } else {
+            this.spinner.stop();
         }
     }
 
     * convertTorrent(torrent) {
+        log(`convert torrent ${torrent}`);
         let idTorrent;
 
         if (torrent.match(/^magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{20,50}/i)) {
@@ -185,82 +175,8 @@ class RealDebrid {
         return link.toString();
     }
 
-    * addTorrent(torrent) {
-        const id = yield new Promise(resolve => {
-            fs.createReadStream(torrent).pipe(request.put(
-                `${config.apiEndpoint}/torrents/addTorrent?auth_token=${this.token}`,
-                {},
-                (error, response, body) => {
-                    const bodyParse = JSON.parse(body);
-
-                    if (!bodyParse || bodyParse.error || bodyParse.id.length !== this.SIZE_ID) {
-                        console.error(chalk.red('Error: add torrent failed'));
-                        process.exit();
-                    }
-
-                    resolve(bodyParse.id);
-                }
-            ));
-        });
-
-        const infos = yield this.getInfosTorrent(id);
-        if (!infos.filename) {
-            console.error(chalk.red('Error: add torrent failed'));
-            process.exit();
-        }
-
-        return id;
-    }
-
-    * addMagnet(magnet) {
-        const id = yield new Promise(resolve => {
-            request.post(
-                `${config.apiEndpoint}/torrents/addMagnet?auth_token=${this.token}`,
-                { form: { magnet: encodeURI(magnet), host: 'uptobox.com' } },
-                (error, response, body) => {
-                    const bodyParse = JSON.parse(body);
-
-                    if (!bodyParse || bodyParse.error || bodyParse.id.length !== this.SIZE_ID) {
-                        console.error(chalk.red('Error: add magnet failed'));
-                        process.exit();
-                    }
-
-                    resolve(bodyParse.id);
-                }
-            );
-        });
-
-        const infos = yield this.getInfosTorrent(id);
-        if (!infos.filename) {
-            console.error(chalk.red('Error: add magnet failed'));
-            process.exit();
-        }
-
-        return id;
-    }
-
-    * waitDuringScan(link) {
-        const message = 'Please wait until the file has been scanned by our anti-virus';
-        if (!this.spinner) {
-            this.spinner = ora(message).start();
-        }
-
-        const content = yield new Promise(resolve => {
-            setTimeout(() => {
-                request(link, (error, response, body) => {
-                    resolve(body);
-                });
-            }, config.requestDelay);
-        });
-
-        if (content.match(new RegExp(message))) {
-            yield this.waitDuringScan(link);
-        } else {
-            this.spinner.stop();
-        }
-    }
-
     download(link, callback) {
+        log(`download file ${link}`);
         const filename = unescape(url.parse(link).pathname.split('/').pop());
         const file = `${process.cwd()}/${filename}`;
 
@@ -280,7 +196,8 @@ class RealDebrid {
         progressLink.on('error', () => callback('error'));
 
         progressLink.on('end', () => {
-            if (fs.statSync(file).size < this.MIN_FILESIZE && fs.readFileSync(file, 'utf8').match(/error/)) {
+            if (fs.statSync(file).size < this.MIN_FILESIZE &&
+                fs.readFileSync(file, 'utf8').match(/error|erreur/gi)) {
                 if (this.retry < this.MAX_RETRY) {
                     this.retry++;
                     console.log(`Error, retry download in ${this.RETRY_DELAY / 1000}s...`);

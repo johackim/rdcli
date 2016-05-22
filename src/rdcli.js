@@ -43,7 +43,7 @@ program
         const spinner = ora('Download: 0.0% Speed: 0Mbps').start();
         yield api.download(unrestrictLink, (res) => {
             if (res.percent) {
-                spinner.text = `Download: ${res.percent}% Speed: ${res.mbps}Mbps ${res.bytesWriting}/${res.totalSize} Remaining: ${res.remaining}sec`;
+                spinner.text = `Download: ${res.percent}% Speed: ${res.mbps}Mbps ${res.bytesWriting}/${res.totalSize} Remaining: ${res.remaining}sec`; // eslint-disable-line max-len
             } else if (res === 'end') {
                 spinner.stop();
                 console.log('File downloaded.');
