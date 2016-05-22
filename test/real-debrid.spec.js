@@ -58,7 +58,7 @@ describe('rdcli', () => {
         server.reset();
     }));
 
-    it('should be connect to api and return token', coCb(function*() {
+    it('should connect to api and return token', coCb(function*() {
         server.post('/oauth/v2/token', (req, res) => res.json({
             access_token: 'APS7T57AXM7G3U7KCT57NYCVAY',
             expires_in: 3600,
@@ -74,7 +74,7 @@ describe('rdcli', () => {
         assert.equal(token, 'APS7T57AXM7G3U7KCT57NYCVAY');
     }));
 
-    it('should be unresrict link', coCb(function*() {
+    it('should unrestrict link', coCb(function*() {
         server.post('/unrestrict/link', (req, res) => res.json({
             id: '4ALWGL4BN4C4G',
             filename: 'test.rar',
@@ -92,7 +92,7 @@ describe('rdcli', () => {
         assert.equal(unrestrictLink, 'https://100.download.real-debrid.com/d/4ALWGL4BN4C4G/test.rar');
     }));
 
-    it('should be retry 5 times if download failed', done => {
+    it('should retry 5 times if download failed', done => {
         api.RETRY_DELAY = 0;
         api.retry = 0;
 
@@ -108,7 +108,7 @@ describe('rdcli', () => {
         });
     });
 
-    it('should be download file', done => {
+    it('should download file', done => {
         api.RETRY_DELAY = 0;
         api.retry = 0;
 
@@ -124,14 +124,21 @@ describe('rdcli', () => {
         });
     });
 
-    it.skip('should be wait during anti-virus scan', coCb(function*() {
-        server.get('/link', (req, res) => res.json({ message: 'Please wait until the file has been scanned by our anti-virus' }));
+    it.skip('should wait during anti-virus scan', coCb(function*() {
+        server.get('/link', (req, res) => res.json(
+            { message: 'Please wait until the file has been scanned by our anti-virus' }
+        ));
         const link = `${config.apiBaseUrl}/link`;
         yield api.waitDuringScan(link);
     }));
 
+    // @TODO
+    it.skip('should download and convert torrent simultaneously', coCb(function*() {
+        console.log('TODO');
+    }));
+
     describe('torrent', () => {
-        it('should be add torrent', coCb(function*() {
+        it('should add torrent', coCb(function*() {
             server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
             server.put('/torrents/addTorrent', (req, res) => res.json({
                 id: 'JHGTA554AZEDF',
@@ -143,7 +150,7 @@ describe('rdcli', () => {
             assert.equal(id, 'JHGTA554AZEDF');
         }));
 
-        it('should be add magnet', coCb(function*() {
+        it('should add magnet', coCb(function*() {
             server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
             server.post('/torrents/addMagnet', (req, res) => res.json({
                 id: 'NLBUIGAEOXYYC',
@@ -155,7 +162,7 @@ describe('rdcli', () => {
             assert.equal(id, 'NLBUIGAEOXYYC');
         }));
 
-        it('should be get torrent list', coCb(function*() {
+        it('should get torrent list', coCb(function*() {
             server.get('/torrents', (req, res) => res.json(torrentList));
 
             const infos = yield api.getTorrentList();
@@ -163,7 +170,7 @@ describe('rdcli', () => {
             assert.equal(infos[0].host, '1fichier.com');
         }));
 
-        it('should be get torrent informations', coCb(function*() {
+        it('should get torrent informations', coCb(function*() {
             server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
 
             const id = 'JKLJOIIA4545Z';
@@ -171,7 +178,13 @@ describe('rdcli', () => {
             assert.equal(infos.filename, 'test.rar');
         }));
 
-        it('should be convert magnet to ddl file', coCb(function*() {
+        it('should select file', coCb(function* () {
+            server.post('/torrents/selectFiles/:id', (req, res) => res.json());
+            const id = 'NLBUIGAEOXYYC';
+            yield api.selectFile(id);
+        }));
+
+        it('should convert magnet to ddl file', coCb(function*() {
             server.post('/torrents/selectFiles/:id', (req, res) => res.json());
             server.get('/torrents', (req, res) => res.json(torrentList));
             server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
@@ -185,7 +198,7 @@ describe('rdcli', () => {
             assert.equal(link, 'http://uptobox.com/xxxxxxxxxxxx');
         }));
 
-        it('should be convert torrent to ddl file', coCb(function*() {
+        it('should convert torrent to ddl file', coCb(function*() {
             server.post('/torrents/selectFiles/:id', (req, res) => res.json());
             server.get('/torrents', (req, res) => res.json(torrentList));
             server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
