@@ -3,7 +3,6 @@
     "rules": {
         "indent": [2, 4],
         "no-console": [0],
-        "max-len": [0],
         "func-names": [0]
     },
     "globals": {
