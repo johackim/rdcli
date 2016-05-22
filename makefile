@@ -5,7 +5,7 @@ start:
 
 test:
 	@ cp -n config/test.json.dist config/test.json
-	@ NODE_ENV=test ./node_modules/.bin/mocha --compilers js:babel-core/register --require babel-polyfill test/setup.js test/*.spec.js
+	@ NODE_ENV=test ./node_modules/.bin/mocha -t 0 --compilers js:babel-core/register --require babel-polyfill test/setup.js test/*.spec.js
 
 build:
 	@ mkdir -p build
