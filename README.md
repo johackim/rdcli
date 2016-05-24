@@ -9,7 +9,7 @@ Rdcli
 
 Download links, magnets and torrent files.
 
-[![asciicast](https://asciinema.org/a/7cv523xguuby2rgpwjw7drlug.png)](https://asciinema.org/a/7cv523xguuby2rgpwjw7drlug)
+[![asciicast](https://raw.githubusercontent.com/jcherqui/rdcli/master/screencast.gif)](https://raw.githubusercontent.com/jcherqui/rdcli/master/screencast.gif)
 
 ## Installation
 
