@@ -25,7 +25,7 @@ Download links, magnets and torrent files.
 
 ### Download magnet file
 
-`rdcli magnet:?xt=urn:btih:33130de5c14a8bb5410746ee5a9604cdfb9538ef`
+`rdcli 'magnet:?xt=urn:btih:33130de5c14a8bb5410746ee5a9604cdfb9538ef'`
 
 ### Download torrent file
 
