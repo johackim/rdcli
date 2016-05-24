@@ -9,6 +9,8 @@ Rdcli
 
 Download links, magnets and torrent files.
 
+[![asciicast](https://asciinema.org/a/7cv523xguuby2rgpwjw7drlug.png)](https://asciinema.org/a/7cv523xguuby2rgpwjw7drlug)
+
 ## Installation
 
 `npm i -g rdcli`
@@ -29,12 +31,23 @@ Download links, magnets and torrent files.
 
 `rdcli Back.to.the.Future.Trilogy.1080p.BluRay.x264.torrent`
 
+## Development
+
+Install dependencies:
+
+`make install`
+
+Start project:
+
+`make run`
+
 # TODO
 
 - [ ] Handle Ctrl+u and backspace in prompt password
 - [x] Add [ora](https://www.npmjs.com/package/ora) spinner
 - [ ] Update text errors
 - [ ] Handle multi-link
+- [x] Add asciinema
 
 License
 ---
