@@ -12,6 +12,7 @@
   },
   "preferGlobal": true,
   "scripts": {
+    "start": "NODE_ENV=dev ./node_modules/.bin/babel-node src/rdcli.js",
     "prepublish": "make build"
   },
   "bin": {
