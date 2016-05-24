@@ -39,7 +39,7 @@ Install dependencies:
 
 Start project:
 
-`make run`
+`npm start`
 
 # TODO
 
