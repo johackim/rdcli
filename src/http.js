@@ -1,6 +1,9 @@
 import request from 'request';
 import chalk from 'chalk';
 import fs from 'fs';
+import debug from 'debug';
+
+const log = debug('http');
 
 const callback = (resolve, reject) => (error, response, body) => {
     if (error) {
@@ -8,6 +11,7 @@ const callback = (resolve, reject) => (error, response, body) => {
     }
 
     if (body) {
+        log(body);
         const bodyParse = JSON.parse(body);
         if (!bodyParse || bodyParse.error) {
             reject(bodyParse.error);
