@@ -54,11 +54,11 @@ const torrentInfos = {
 };
 
 describe('rdcli', () => {
-    beforeEach(coCb(function*() {
+    beforeEach(function*() {
         server.reset();
-    }));
+    });
 
-    it('should connect to api and return token', coCb(function*() {
+    it('should connect to api and return token', function*() {
         server.post('/oauth/v2/token', (req, res) => res.json({
             access_token: 'APS7T57AXM7G3U7KCT57NYCVAY',
             expires_in: 3600,
@@ -72,9 +72,9 @@ describe('rdcli', () => {
         const token = api.token;
 
         assert.equal(token, 'APS7T57AXM7G3U7KCT57NYCVAY');
-    }));
+    });
 
-    it('should unrestrict link', coCb(function*() {
+    it('should unrestrict link', function*() {
         server.post('/unrestrict/link', (req, res) => res.json({
             id: '4ALWGL4BN4C4G',
             filename: 'test.rar',
@@ -90,7 +90,7 @@ describe('rdcli', () => {
         const link = 'http://uptobox.com/xxxxxxxxxxxx';
         const unrestrictLink = yield api.unrestrictLink(link);
         assert.equal(unrestrictLink, 'https://100.download.real-debrid.com/d/4ALWGL4BN4C4G/test.rar');
-    }));
+    });
 
     it('should retry 5 times if download failed', done => {
         api.RETRY_DELAY = 0;
@@ -124,21 +124,21 @@ describe('rdcli', () => {
         });
     });
 
-    it.skip('should wait during anti-virus scan', coCb(function*() {
+    it.skip('should wait during anti-virus scan', function*() {
         server.get('/link', (req, res) => res.json(
             { message: 'Please wait until the file has been scanned by our anti-virus' }
         ));
         const link = `${config.apiBaseUrl}/link`;
         yield api.waitDuringScan(link);
-    }));
+    });
 
     // @TODO
-    it.skip('should download and convert torrent simultaneously', coCb(function*() {
+    it.skip('should download and convert torrent simultaneously', function*() {
         console.log('TODO');
-    }));
+    });
 
     describe('torrent', () => {
-        it('should add torrent', coCb(function*() {
+        it('should add torrent', function*() {
             server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
             server.put('/torrents/addTorrent', (req, res) => res.json({
                 id: 'JHGTA554AZEDF',
@@ -148,9 +148,9 @@ describe('rdcli', () => {
             const torrentFile = `${__dirname}/fixtures/test.torrent`;
             const id = yield api.addTorrent(torrentFile);
             assert.equal(id, 'JHGTA554AZEDF');
-        }));
+        });
 
-        it('should add magnet', coCb(function*() {
+        it('should add magnet', function*() {
             server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
             server.post('/torrents/addMagnet', (req, res) => res.json({
                 id: 'NLBUIGAEOXYYC',
@@ -160,31 +160,31 @@ describe('rdcli', () => {
             const magnet = 'magnet:?xt=urn:btih:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
             const id = yield api.addMagnet(magnet);
             assert.equal(id, 'NLBUIGAEOXYYC');
-        }));
+        });
 
-        it('should get torrent list', coCb(function*() {
+        it('should get torrent list', function*() {
             server.get('/torrents', (req, res) => res.json(torrentList));
 
             const infos = yield api.getTorrentList();
             assert.equal(infos.length, 2);
             assert.equal(infos[0].host, '1fichier.com');
-        }));
+        });
 
-        it('should get torrent informations', coCb(function*() {
+        it('should get torrent informations', function*() {
             server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
 
             const id = 'JKLJOIIA4545Z';
             const infos = yield api.getInfosTorrent(id);
             assert.equal(infos.filename, 'test.rar');
-        }));
+        });
 
-        it('should select file', coCb(function* () {
+        it('should select file', function* () {
             server.post('/torrents/selectFiles/:id', (req, res) => res.json());
             const id = 'NLBUIGAEOXYYC';
             yield api.selectFile(id);
-        }));
+        });
 
-        it('should convert magnet to ddl file', coCb(function*() {
+        it('should convert magnet to ddl file', function*() {
             server.post('/torrents/selectFiles/:id', (req, res) => res.json());
             server.get('/torrents', (req, res) => res.json(torrentList));
             server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
@@ -196,9 +196,9 @@ describe('rdcli', () => {
             const magnet = 'magnet:?xt=urn:btih:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
             const link = yield api.convertTorrent(magnet);
             assert.equal(link, 'http://uptobox.com/xxxxxxxxxxxx');
-        }));
+        });
 
-        it('should convert torrent to ddl file', coCb(function*() {
+        it('should convert torrent to ddl file', function*() {
             server.post('/torrents/selectFiles/:id', (req, res) => res.json());
             server.get('/torrents', (req, res) => res.json(torrentList));
             server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
@@ -210,6 +210,6 @@ describe('rdcli', () => {
             const torrentFile = `${__dirname}/fixtures/test.torrent`;
             const link = yield api.convertTorrent(torrentFile);
             assert.equal(link, 'http://uptobox.com/xxxxxxxxxxxx');
-        }));
+        });
     });
 });
