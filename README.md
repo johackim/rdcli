@@ -41,14 +41,6 @@ Start project:
 
 `npm start`
 
-# TODO
-
-- [ ] Handle Ctrl+u and backspace in prompt password
-- [x] Add [ora](https://www.npmjs.com/package/ora) spinner
-- [ ] Update text errors
-- [ ] Handle multi-link
-- [x] Add asciinema
-
 License
 ---
 
