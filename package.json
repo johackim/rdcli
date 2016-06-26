@@ -1,6 +1,6 @@
 {
   "name": "rdcli",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Command Line Interface for real-debrid.com",
   "homepage": "https://github.com/jcherqui/rdcli",
   "repository": {
@@ -34,6 +34,7 @@
     "ora": "^0.2.3",
     "request": "^2.72.0",
     "request-progress": "^2.0.1",
+    "request-promise": "^3.0.0",
     "url": "^0.11.0"
   },
   "devDependencies": {
@@ -48,8 +49,7 @@
     "eslint-plugin-jsx-a11y": "^1.5.3",
     "eslint-plugin-react": "^5.2.2",
     "json-server": "^0.8.14",
-    "mocha": "^2.5.3",
-    "request-promise": "^3.0.0"
+    "mocha": "^2.5.3"
   },
   "keywords": [
     "real-debrid",
