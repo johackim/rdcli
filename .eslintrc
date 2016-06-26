@@ -9,9 +9,7 @@
         "before",
         "after",
         "describe",
-        "api",
         "it",
-        "coCb",
         "server",
         "assert",
         "beforeEach"
