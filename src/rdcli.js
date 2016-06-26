@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import 'babel-polyfill';
 import { download, waitDuringScan } from './download';
 import { convertTorrent, convertMagnet } from './torrent';
 import unrestrict from './unrestrict';
