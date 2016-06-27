@@ -19,15 +19,15 @@ Download links, magnets and torrent files.
 
 `rdcli <url|magnet|torrent>`
 
-### Download DDL file
+Download DDL file:
 
 `rdcli http://uptobox.com/1gdncohxbqkp`
 
-### Download magnet file
+Download magnet file:
 
 `rdcli 'magnet:?xt=urn:btih:33130de5c14a8bb5410746ee5a9604cdfb9538ef'`
 
-### Download torrent file
+Download torrent file:
 
 `rdcli Back.to.the.Future.Trilogy.1080p.BluRay.x264.torrent`
 
@@ -39,7 +39,7 @@ Install dependencies:
 
 Start project:
 
-`npm start`
+`make run`
 
 License
 ---
