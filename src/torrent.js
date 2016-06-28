@@ -3,6 +3,7 @@ import config from 'config';
 import debug from 'debug';
 import fs from 'fs';
 import ora from 'ora';
+import sleep from 'co-sleep';
 
 const log = debug('torrent');
 
@@ -119,6 +120,7 @@ export function * convertMagnet(magnet, token) {
         link = infos.links;
         progressConvert = Number(infos.progress);
         spinner.text = `Convert magnet progress: ${progressConvert}% (${status})`;
+        yield sleep(config.requestDelay);
     }
     spinner.stop();
 
@@ -141,6 +143,7 @@ export function * convertTorrent(torrent, token) {
         link = infos.links;
         progressConvert = Number(infos.progress);
         spinner.text = `Convert torrent progress: ${progressConvert}% (${status})`;
+        yield sleep(config.requestDelay);
     }
     spinner.stop();
 
