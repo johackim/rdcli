@@ -16,8 +16,19 @@ describe('connect', () => {
         assert.equal(token, 'APS7T57AXM7G3U7KCT57NYCVAY');
     });
 
-    // @TODO
-    it('should return error if bad logins', () => {
+    it.skip('should return error if bad logins', function * () {
+        server.post('/oauth/v2/token', (req, res) => res.status(403).json({
+            error: 'invalid_login',
+            error_code: 12,
+        }));
 
+        const username = 'username';
+        const password = 'password';
+
+        assert.throws(yield getToken(username, password, Error, 'Invalid login'));
+    });
+
+    afterEach(() => {
+        server.reset();
     });
 });
