@@ -41,6 +41,10 @@ Start project:
 
 `make run`
 
+Run tests:
+
+`make test`
+
 License
 ---
 
