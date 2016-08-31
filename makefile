@@ -3,12 +3,12 @@
 install: ## Install dependencies
 	npm install
 
-build: ## Build with webpack
+build: ## Build with babel
 	@ mkdir -p build
 	@ ./node_modules/.bin/babel src/ --out-dir build/ --compact true
 	@ chmod +x build/rdcli.js
 
-run: ## Run webpack
+run: ## Run with babel
 	@ ./node_modules/.bin/babel-node src/rdcli.js $(filter-out $@,$(MAKECMDGOALS))
 
 test: ## Run unit tests
