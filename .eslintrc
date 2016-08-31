@@ -12,6 +12,7 @@
         "it",
         "server",
         "assert",
-        "beforeEach"
+        "beforeEach",
+        "afterEach"
     }
 }
