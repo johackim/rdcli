@@ -50,7 +50,8 @@
     "eslint-plugin-jsx-a11y": "^1.5.3",
     "eslint-plugin-react": "^5.2.2",
     "json-server": "^0.8.14",
-    "mocha": "^2.5.3"
+    "mocha": "^2.5.3",
+    "np": "^2.3.0"
   },
   "keywords": [
     "real-debrid",
