@@ -8,6 +8,10 @@ export function handleErrorMessage(errorCode, error) {
         throw new Error('Invalid login');
     case 13:
         throw new Error('Invalid password');
+    case 20:
+        throw new Error('Hoster not available for free users');
+    case 24:
+        throw new Error('Invalid link');
     default:
         throw new Error(error);
     }
