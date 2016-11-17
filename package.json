@@ -1,6 +1,6 @@
 {
   "name": "rdcli",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Command Line Interface for real-debrid.com",
   "homepage": "https://github.com/jcherqui/rdcli",
   "repository": {
