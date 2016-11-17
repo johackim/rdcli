@@ -1,6 +1,7 @@
 import rp from 'request-promise';
 import config from 'config';
 import debug from 'debug';
+import { handleErrorMessage } from './utils';
 
 const log = debug('unrestrict');
 
@@ -19,8 +20,8 @@ export default function * unrestrict(link, token) {
     let data;
     yield rp(options).then(body => {
         data = body.download;
-    }).catch(() => {
-        throw new Error('invalid link');
+    }).catch(e => {
+        handleErrorMessage(e.error.error_code, e);
     });
 
     return data;
