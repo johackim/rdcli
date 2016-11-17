@@ -7,7 +7,7 @@ Rdcli
 
 > A simple CLI tool to unrestrict links with real-debrid.com
 
-Download links, magnets and torrent files.
+Download DDL links, magnets and torrent files.
 
 [![asciicast](https://raw.githubusercontent.com/jcherqui/rdcli/master/screencast.gif)](https://raw.githubusercontent.com/jcherqui/rdcli/master/screencast.gif)
 
