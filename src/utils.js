@@ -1,4 +1,4 @@
-export function handleErrorMessage(errorCode, error) {
+export default function handleErrorMessage(errorCode, error) {
     switch (errorCode) {
     case 5:
         throw new Error('Login error, VPN ?');
