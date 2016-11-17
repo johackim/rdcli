@@ -5,7 +5,7 @@ import { handleErrorMessage } from './utils';
 
 const log = debug('unrestrict');
 
-export default function * unrestrict(link, token) {
+export default function* unrestrict(link, token) {
     log(`unrestrict link ${link}`);
 
     const options = {
@@ -18,9 +18,9 @@ export default function * unrestrict(link, token) {
     };
 
     let data;
-    yield rp(options).then(body => {
+    yield rp(options).then((body) => {
         data = body.download;
-    }).catch(e => {
+    }).catch((e) => {
         handleErrorMessage(e.error.error_code, e);
     });
 

@@ -15,14 +15,14 @@ const MIN_FILESIZE = 3000;
 let retry = 0;
 let spinner;
 
-export function * waitDuringScan(link) {
+export function* waitDuringScan(link) {
     log(`scan anti-virus ${link}`);
     const message = 'Please wait until the file has been scanned by our anti-virus';
     if (!spinner) {
         spinner = ora(message).start();
     }
 
-    const content = yield new Promise(resolve => {
+    const content = yield new Promise((resolve) => {
         setTimeout(() => {
             request(link, (error, response, body) => {
                 resolve(body);
@@ -37,7 +37,7 @@ export function * waitDuringScan(link) {
     }
 }
 
-export function download(link, callback) {
+export default function download(link, callback) {
     log(`download file ${link}`);
     const filename = unescape(url.parse(link).pathname.split('/').pop());
     const file = `${process.cwd()}/${filename}`;
@@ -47,7 +47,7 @@ export function download(link, callback) {
         delay: 1000,
     });
 
-    progressLink.on('progress', (state) => callback({
+    progressLink.on('progress', state => callback({
         percent: humanize.numberFormat(state.percentage * 100, 1),
         mbps: humanize.filesize(state.speed),
         totalSize: humanize.filesize(state.size.total),
@@ -61,7 +61,7 @@ export function download(link, callback) {
         if (fs.statSync(file).size < MIN_FILESIZE &&
             fs.readFileSync(file, 'utf8').match(/error|erreur/gi)) {
             if (retry < MAX_RETRY) {
-                retry++;
+                retry += 1;
                 console.log(`Error, retry download in ${RETRY_DELAY / 1000}s...`);
                 setTimeout(() => {
                     download(link, callback);

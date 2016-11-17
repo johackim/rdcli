@@ -1,7 +1,7 @@
 import getToken from '../../src/connect';
 
 describe('connect', () => {
-    it('should return access token', function * () {
+    it('should return access token', function* () {
         server.post('/oauth/v2/token', (req, res) => res.json({
             access_token: 'APS7T57AXM7G3U7KCT57NYCVAY',
             expires_in: 3600,
@@ -16,7 +16,7 @@ describe('connect', () => {
         assert.equal(token, 'APS7T57AXM7G3U7KCT57NYCVAY');
     });
 
-    it.skip('should return error if bad logins', function * () {
+    it.skip('should return error if bad logins', function* () {
         server.post('/oauth/v2/token', (req, res) => res.status(403).json({
             error: 'invalid_login',
             error_code: 12,
