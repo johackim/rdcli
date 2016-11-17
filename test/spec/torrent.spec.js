@@ -63,7 +63,7 @@ const torrentInfos = {
 const token = 'APS7T57AXM7G3U7KCT57NYCVAY';
 
 describe('torrent', () => {
-    it('should return torrent informations', function * () {
+    it('should return torrent informations', function* () {
         server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
 
         const id = 'JKLJOIIA4545Z';
@@ -71,7 +71,7 @@ describe('torrent', () => {
         assert.equal(infos.filename, 'test.rar');
     });
 
-    it('should get torrent list', function * () {
+    it('should get torrent list', function* () {
         server.get('/torrents', (req, res) => res.json(torrentList));
 
         const infos = yield getTorrentList(token);
@@ -79,13 +79,13 @@ describe('torrent', () => {
         assert.equal(infos[0].host, '1fichier.com');
     });
 
-    it('should select file', function * () {
+    it('should select file', function* () {
         server.post('/torrents/selectFiles/:id', (req, res) => res.json());
         const id = 'NLBUIGAEOXYYC';
         yield selectFile(id, token);
     });
 
-    it('should add magnet', function * () {
+    it('should add magnet', function* () {
         server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
         server.post('/torrents/addMagnet', (req, res) => res.json({
             id: 'NLBUIGAEOXYYC',
@@ -97,7 +97,7 @@ describe('torrent', () => {
         assert.equal(id, 'NLBUIGAEOXYYC');
     });
 
-    it('should add torrent', function * () {
+    it('should add torrent', function* () {
         server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
         server.put('/torrents/addTorrent', (req, res) => res.json({
             id: 'JHGTA554AZEDF',
@@ -109,7 +109,7 @@ describe('torrent', () => {
         assert.equal(id, 'JHGTA554AZEDF');
     });
 
-    it('should convert magnet to ddl file', function * () {
+    it('should convert magnet to ddl file', function* () {
         server.post('/torrents/selectFiles/:id', (req, res) => res.json());
         server.get('/torrents', (req, res) => res.json(torrentList));
         server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
@@ -123,7 +123,7 @@ describe('torrent', () => {
         assert.equal(link, 'http://uptobox.com/xxxxxxxxxxxx');
     });
 
-    it('should convert torrent to ddl file', function * () {
+    it('should convert torrent to ddl file', function* () {
         server.post('/torrents/selectFiles/:id', (req, res) => res.json());
         server.get('/torrents', (req, res) => res.json(torrentList));
         server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
