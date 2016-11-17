@@ -1,4 +1,4 @@
-/* eslint no-underscore-dangle: [0] */
+/* eslint-disable */
 
 import jsonServer from 'json-server';
 import bodyParser from 'body-parser';

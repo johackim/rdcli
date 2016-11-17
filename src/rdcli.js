@@ -1,23 +1,23 @@
 #!/usr/bin/env node
 
 import 'babel-polyfill';
-import { download, waitDuringScan } from './download';
-import { convertTorrent, convertMagnet } from './torrent';
-import unrestrict from './unrestrict';
-import getToken from './connect';
-import pjson from '../package.json';
 import program from 'commander';
 import prompt from 'co-prompt';
 import ora from 'ora';
 import co from 'co';
 import chalk from 'chalk';
 import fs from 'fs';
+import { download, waitDuringScan } from './download';
+import { convertTorrent, convertMagnet } from './torrent';
+import unrestrict from './unrestrict';
+import getToken from './connect';
+import pjson from '../package.json';
 
 program
     .version(pjson.version)
     .description('Download links, magnets and torrent files.')
     .usage('<url|magnet|torrent>')
-    .action((arg) => co(function*action() {
+    .action(arg => co(function* action() {
         try {
             const username = yield prompt('Username: ');
             const password = yield prompt.password('Password: ');

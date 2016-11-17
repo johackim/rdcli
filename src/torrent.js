@@ -7,7 +7,7 @@ import sleep from 'co-sleep';
 
 const log = debug('torrent');
 
-export function * getInfosTorrent(idTorrent, token) {
+export function* getInfosTorrent(idTorrent, token) {
     log(`get infos torrent ${idTorrent}`);
 
     const options = {
@@ -16,16 +16,16 @@ export function * getInfosTorrent(idTorrent, token) {
     };
 
     let data;
-    yield rp(options).then(body => {
+    yield rp(options).then((body) => {
         data = body;
-    }).catch(e => {
+    }).catch((e) => {
         throw new Error(e.error.error);
     });
 
     return data;
 }
 
-export function * getTorrentList(token) {
+export function* getTorrentList(token) {
     log('get torrent list');
 
     const options = {
@@ -34,16 +34,16 @@ export function * getTorrentList(token) {
     };
 
     let data;
-    yield rp(options).then(body => {
+    yield rp(options).then((body) => {
         data = body;
-    }).catch(e => {
+    }).catch((e) => {
         throw new Error(e.error.error);
     });
 
     return data;
 }
 
-export function * selectFile(idTorrent, token, files = 'all') {
+export function* selectFile(idTorrent, token, files = 'all') {
     log(`select file ${idTorrent}`);
 
     const options = {
@@ -56,16 +56,16 @@ export function * selectFile(idTorrent, token, files = 'all') {
     };
 
     let data;
-    yield rp(options).then(body => {
+    yield rp(options).then((body) => {
         data = body;
-    }).catch(e => {
+    }).catch((e) => {
         throw new Error(e.error.error);
     });
 
     return data;
 }
 
-export function * addMagnet(magnet, token) {
+export function* addMagnet(magnet, token) {
     log(`add magnet ${magnet}`);
 
     const options = {
@@ -79,16 +79,16 @@ export function * addMagnet(magnet, token) {
     };
 
     let data;
-    yield rp(options).then(body => {
+    yield rp(options).then((body) => {
         data = body;
-    }).catch(e => {
+    }).catch((e) => {
         throw new Error(e.error.error);
     });
 
     return data.id;
 }
 
-export function * addTorrent(torrent, token) {
+export function* addTorrent(torrent, token) {
     log(`add torrent ${torrent}`);
 
     const options = {
@@ -97,14 +97,14 @@ export function * addTorrent(torrent, token) {
     };
 
     let data;
-    yield fs.createReadStream(torrent).pipe(rp.put(options)).then(body => {
+    yield fs.createReadStream(torrent).pipe(rp.put(options)).then((body) => {
         data = body;
     });
 
     return data.id;
 }
 
-export function * convertMagnet(magnet, token) {
+export function* convertMagnet(magnet, token) {
     log(`convert magnet ${magnet}`);
 
     const idMagnet = yield addMagnet(magnet, token);
@@ -127,7 +127,7 @@ export function * convertMagnet(magnet, token) {
     return link.toString();
 }
 
-export function * convertTorrent(torrent, token) {
+export function* convertTorrent(torrent, token) {
     log(`convert torrent ${torrent}`);
 
     const idTorrent = yield addTorrent(torrent, token);
