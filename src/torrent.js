@@ -124,6 +124,7 @@ export function* convertMagnet(magnet, token) {
     }
     spinner.stop();
 
+    console.log(`Convert finish: ${link.toString()}`);
     return link.toString();
 }
 
@@ -147,5 +148,6 @@ export function* convertTorrent(torrent, token) {
     }
     spinner.stop();
 
+    console.log(`Convert finish: ${link.toString()}`);
     return link.toString();
 }

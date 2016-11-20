@@ -1,6 +1,6 @@
 import config from 'config';
 import fs from 'fs';
-import download from '../../src/download';
+import { download } from '../../src/download';
 
 describe('download', () => {
     it('should download file', (done) => {

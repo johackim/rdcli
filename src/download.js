@@ -37,7 +37,7 @@ export function* waitDuringScan(link) {
     }
 }
 
-export default function download(link, callback) {
+export function download(link, callback) {
     log(`download file ${link}`);
     const filename = unescape(url.parse(link).pathname.split('/').pop());
     const file = `${process.cwd()}/${filename}`;
