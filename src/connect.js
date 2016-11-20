@@ -1,7 +1,7 @@
 import rp from 'request-promise';
 import config from 'config';
 import debug from 'debug';
-import { handleErrorMessage } from './utils';
+import handleErrorMessage from './handleErrorMessage';
 
 const log = debug('connect');
 
