@@ -36,7 +36,7 @@ program
             }
 
             const unrestrictLink = yield unrestrict(link, token);
-            console.log(`Start download : ${link}`);
+            console.log(`Start download : ${unrestrictLink}`);
             yield waitDuringScan(link);
 
             const spinner = ora('Download: 0.0% Speed: 0Mbps').start();
