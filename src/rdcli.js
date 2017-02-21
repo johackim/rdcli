@@ -8,7 +8,7 @@ import co from 'co';
 import chalk from 'chalk';
 import fs from 'fs';
 import { download, waitDuringScan } from './download';
-import { convertTorrent, convertMagnet } from './torrent';
+import { convertTorrent } from './torrent';
 import unrestrict from './unrestrict';
 import getToken from './connect';
 import pjson from '../package.json';
@@ -26,9 +26,8 @@ program
             let link;
             if (arg.match(/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w\? \.-]*)*\/?$/)) {
                 link = arg;
-            } else if (arg.match(/^magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{20,50}/i)) {
-                link = yield convertMagnet(arg, token);
-            } else if (fs.existsSync(arg)) {
+            } else if (arg.match(/^magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{20,50}/i)
+                || fs.existsSync(arg)) {
                 link = yield convertTorrent(arg, token);
             } else {
                 console.log('Usage: rdcli <url|magnet|torrent>');
