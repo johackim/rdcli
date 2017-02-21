@@ -7,6 +7,10 @@ import sleep from 'co-sleep';
 
 const log = debug('torrent');
 
+const error = (e) => {
+    throw new Error(e.error.error);
+};
+
 export function* getInfosTorrent(idTorrent, token) {
     log(`get infos torrent ${idTorrent}`);
 
@@ -18,9 +22,7 @@ export function* getInfosTorrent(idTorrent, token) {
     let data;
     yield rp(options).then((body) => {
         data = body;
-    }).catch((e) => {
-        throw new Error(e.error.error);
-    });
+    }).catch(error);
 
     return data;
 }
@@ -36,9 +38,7 @@ export function* getTorrentList(token) {
     let data;
     yield rp(options).then((body) => {
         data = body;
-    }).catch((e) => {
-        throw new Error(e.error.error);
-    });
+    }).catch(error);
 
     return data;
 }
@@ -58,9 +58,7 @@ export function* selectFile(idTorrent, token, files = 'all') {
     let data;
     yield rp(options).then((body) => {
         data = body;
-    }).catch((e) => {
-        throw new Error(e.error.error);
-    });
+    }).catch(error);
 
     return data;
 }
@@ -81,9 +79,7 @@ export function* addMagnet(magnet, token) {
     let data;
     yield rp(options).then((body) => {
         data = body;
-    }).catch((e) => {
-        throw new Error(e.error.error);
-    });
+    }).catch(error);
 
     return data.id;
 }
@@ -104,34 +100,15 @@ export function* addTorrent(torrent, token) {
     return data.id;
 }
 
-export function* convertMagnet(magnet, token) {
-    log(`convert magnet ${magnet}`);
-
-    const idMagnet = yield addMagnet(magnet, token);
-    yield selectFile(idMagnet, token);
-
-    let link = [];
-    let status = 'wait';
-    let progressConvert = 0;
-    const spinner = ora(`Convert magnet progress: ${progressConvert}% (${status})`).start();
-    while (!link.length) {
-        const infos = yield getInfosTorrent(idMagnet, token);
-        status = infos.status;
-        link = infos.links;
-        progressConvert = Number(infos.progress);
-        spinner.text = `Convert magnet progress: ${progressConvert}% (${status})`;
-        yield sleep(config.requestDelay);
-    }
-    spinner.stop();
-
-    console.log(`Convert finish: ${link.toString()}`);
-    return link.toString();
-}
-
 export function* convertTorrent(torrent, token) {
     log(`convert torrent ${torrent}`);
 
-    const idTorrent = yield addTorrent(torrent, token);
+    let idTorrent;
+    if (torrent.match(/^magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{20,50}/i)) {
+        idTorrent = yield addMagnet(torrent, token);
+    } else {
+        idTorrent = yield addTorrent(torrent, token);
+    }
     yield selectFile(idTorrent, token);
 
     let link = [];
