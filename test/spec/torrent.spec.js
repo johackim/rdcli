@@ -4,7 +4,6 @@ import {
     selectFile,
     addMagnet,
     addTorrent,
-    convertMagnet,
     convertTorrent,
 } from '../../src/torrent';
 
@@ -119,7 +118,7 @@ describe('torrent', () => {
         }));
 
         const magnet = 'magnet:?xt=urn:btih:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
-        const link = yield convertMagnet(magnet, token);
+        const link = yield convertTorrent(magnet, token);
         assert.equal(link, 'http://uptobox.com/xxxxxxxxxxxx');
     });
 
