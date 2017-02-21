@@ -24,7 +24,7 @@ program
             const token = yield getToken(username, password);
 
             let link;
-            if (arg.match(/^(https?:\/\/)([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w\? \.-]*)*\/?$/)) {
+            if (arg.match(/^(https?:\/\/)([\da-z.-]+).([a-z.]{2,6})([/\w? .-]*)*\/?$/)) {
                 link = arg;
             } else if (arg.match(/^magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{20,50}/i)
                 || fs.existsSync(arg)) {
