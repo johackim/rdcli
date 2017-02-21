@@ -7,6 +7,10 @@ import sleep from 'co-sleep';
 
 const log = debug('torrent');
 
+const error = (e) => {
+    throw new Error(e.error.error);
+};
+
 export function* getInfosTorrent(idTorrent, token) {
     log(`get infos torrent ${idTorrent}`);
 
@@ -18,9 +22,7 @@ export function* getInfosTorrent(idTorrent, token) {
     let data;
     yield rp(options).then((body) => {
         data = body;
-    }).catch((e) => {
-        throw new Error(e.error.error);
-    });
+    }).catch(error);
 
     return data;
 }
@@ -36,9 +38,7 @@ export function* getTorrentList(token) {
     let data;
     yield rp(options).then((body) => {
         data = body;
-    }).catch((e) => {
-        throw new Error(e.error.error);
-    });
+    }).catch(error);
 
     return data;
 }
@@ -58,9 +58,7 @@ export function* selectFile(idTorrent, token, files = 'all') {
     let data;
     yield rp(options).then((body) => {
         data = body;
-    }).catch((e) => {
-        throw new Error(e.error.error);
-    });
+    }).catch(error);
 
     return data;
 }
@@ -81,9 +79,7 @@ export function* addMagnet(magnet, token) {
     let data;
     yield rp(options).then((body) => {
         data = body;
-    }).catch((e) => {
-        throw new Error(e.error.error);
-    });
+    }).catch(error);
 
     return data.id;
 }
