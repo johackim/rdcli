@@ -48,7 +48,7 @@ export function download(link, callback) {
     });
 
     progressLink.on('progress', state => callback({
-        percent: humanize.numberFormat(state.percentage * 100, 1),
+        percent: humanize.numberFormat(state.percent * 100, 1),
         mbps: humanize.filesize(state.speed),
         totalSize: humanize.filesize(state.size.total),
         bytesWriting: humanize.filesize(state.size.transferred),
