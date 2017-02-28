@@ -19,8 +19,8 @@ program
     .usage('<url|magnet|torrent>')
     .action(arg => co(function* action() {
         try {
-            const username = yield prompt('Username: ');
-            const password = yield prompt.password('Password: ');
+            const username = process.env.REALDEBRID_USERNAME || (yield prompt('Username: '));
+            const password = process.env.REALDEBRID_PASSWORD || (yield prompt.password('Password: '));
             const token = yield getToken(username, password);
 
             let link;
