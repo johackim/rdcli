@@ -16,6 +16,13 @@ Download DDL links, magnets and torrent files.
 
 `npm i -g rdcli`
 
+And set your real-debrid account as enviroment variable on your `~/.bashrc`
+
+```bash
+export REALDEBRID_USERNAME=your_username
+export REALDEBRID_PASSWORD=your_password
+```
+
 ## Usage
 
 `rdcli <url|magnet|torrent>`
