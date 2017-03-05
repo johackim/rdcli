@@ -4,7 +4,7 @@ import debug from 'debug';
 import fs from 'fs';
 import ora from 'ora';
 import sleep from 'co-sleep';
-import handleErrorMessage from './handleErrorMessage';
+import { handleErrorMessage } from './utils';
 
 const log = debug('torrent');
 
