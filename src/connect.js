@@ -23,9 +23,7 @@ export default function* getToken(username, password) {
     let data;
     yield rp(options).then((body) => {
         data = body.access_token;
-    }).catch((e) => {
-        handleErrorMessage(e.error.error_code, e);
-    });
+    }).catch(handleErrorMessage);
 
     return data;
 }

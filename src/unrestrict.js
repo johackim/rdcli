@@ -20,9 +20,7 @@ export default function* unrestrict(link, token) {
     let data;
     yield rp(options).then((body) => {
         data = body.download;
-    }).catch((e) => {
-        handleErrorMessage(e.error.error_code, e);
-    });
+    }).catch(handleErrorMessage);
 
     return data;
 }
