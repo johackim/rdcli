@@ -11,6 +11,9 @@ build: ## Build with babel
 run: ## Run with babel
 	@ ./node_modules/.bin/babel-node src/rdcli.js $(filter-out $@,$(MAKECMDGOALS))
 
+debug: ## Run with babel (with debug)
+	@ DEBUG=torrent,download,connect,unrestrict ./node_modules/.bin/babel-node src/rdcli.js $(filter-out $@,$(MAKECMDGOALS))
+
 test: ## Run unit tests
 	@ cp -n config/test.json.dist config/test.json
 	@ NODE_ENV=test ./node_modules/.bin/mocha --compilers js:babel-core/register --require babel-polyfill test/setup.js test/spec/*.spec.js
