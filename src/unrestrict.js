@@ -1,7 +1,6 @@
-import rp from 'request-promise';
 import config from 'config';
 import debug from 'debug';
-import handleErrorMessage from './handleErrorMessage';
+import { request } from './utils';
 
 const log = debug('unrestrict');
 
@@ -17,10 +16,5 @@ export default function* unrestrict(link, token) {
         json: true,
     };
 
-    let data;
-    yield rp(options).then((body) => {
-        data = body.download;
-    }).catch(handleErrorMessage);
-
-    return data;
+    return (yield request(options)).download;
 }
