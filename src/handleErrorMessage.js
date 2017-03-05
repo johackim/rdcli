@@ -1,7 +1,13 @@
-export default function handleErrorMessage(errorCode, error) {
+export default function handleErrorMessage(error) {
+    const errorCode = error.error.error_code;
+
     switch (errorCode) {
+    case 1:
+        throw new Error('Missing parameter, invalid torrent ?');
     case 5:
-        throw new Error('Login error, VPN ?');
+        throw new Error('Login error, VPN ? Dedicated Server ?');
+    case 7:
+        throw new Error('Resource not found');
     case 11:
         throw new Error(`Two-factor authentication needed: ${error.error.verification_url}`);
     case 12:
