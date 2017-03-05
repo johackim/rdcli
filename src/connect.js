@@ -1,7 +1,6 @@
-import rp from 'request-promise';
 import config from 'config';
 import debug from 'debug';
-import handleErrorMessage from './handleErrorMessage';
+import { request } from './utils';
 
 const log = debug('connect');
 
@@ -20,10 +19,5 @@ export default function* getToken(username, password) {
         json: true,
     };
 
-    let data;
-    yield rp(options).then((body) => {
-        data = body.access_token;
-    }).catch(handleErrorMessage);
-
-    return data;
+    return (yield request(options)).access_token;
 }

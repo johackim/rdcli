@@ -1,4 +1,6 @@
-export default function handleErrorMessage(error) {
+import rp from 'request-promise';
+
+export function handleErrorMessage(error) {
     const errorCode = error.error.error_code;
 
     switch (errorCode) {
@@ -24,3 +26,8 @@ export default function handleErrorMessage(error) {
         throw new Error(error);
     }
 }
+
+export function* request(options) {
+    return yield rp(options).catch(handleErrorMessage);
+}
+
