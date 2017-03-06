@@ -5,7 +5,6 @@ Rdcli
 [![Build Status](https://travis-ci.org/jcherqui/rdcli.svg?branch=master)](https://travis-ci.org/jcherqui/rdcli/)
 [![npm download](https://img.shields.io/npm/dt/rdcli.svg)](https://www.npmjs.com/package/rdcli)
 [![Code Climate](https://codeclimate.com/github/jcherqui/rdcli/badges/gpa.svg)](https://codeclimate.com/github/jcherqui/rdcli)
-[![Known Vulnerabilities](https://snyk.io/test/github/jcherqui/rdcli/badge.svg)](https://snyk.io/test/github/jcherqui/rdcli)
 
 > A simple CLI tool to unrestrict links with real-debrid.com
 
