@@ -1,130 +1,108 @@
-import rp from 'request-promise';
 import config from 'config';
 import debug from 'debug';
 import fs from 'fs';
 import ora from 'ora';
 import sleep from 'co-sleep';
+import fetch from 'node-fetch';
+import handleErrorMessage from './utils';
 
 const log = debug('torrent');
 
-const error = (e) => {
-    throw new Error(e.error.error);
-};
-
-export function* getInfosTorrent(idTorrent, token) {
+export const getInfosTorrent = async (idTorrent, token) => {
     log(`get infos torrent ${idTorrent}`);
 
-    const options = {
-        uri: `${config.apiEndpoint}/torrents/info/${idTorrent}?auth_token=${token}`,
-        json: true,
-    };
+    try {
+        const res = await fetch(`${config.apiEndpoint}/torrents/info/${idTorrent}?auth_token=${token}`);
+        const data = await res.json();
+        return data;
+    } catch (e) {
+        return handleErrorMessage(e);
+    }
+};
 
-    let data;
-    yield rp(options).then((body) => {
-        data = body;
-    }).catch(error);
-
-    return data;
-}
-
-export function* getTorrentList(token) {
+export const getTorrentList = async (token) => {
     log('get torrent list');
 
-    const options = {
-        uri: `${config.apiEndpoint}/torrents?auth_token=${token}`,
-        json: true,
-    };
+    try {
+        const res = await fetch(`${config.apiEndpoint}/torrents?auth_token=${token}`);
+        const data = await res.json();
+        return data;
+    } catch (e) {
+        return handleErrorMessage(e);
+    }
+};
 
-    let data;
-    yield rp(options).then((body) => {
-        data = body;
-    }).catch(error);
-
-    return data;
-}
-
-export function* selectFile(idTorrent, token, files = 'all') {
+export const selectFile = async (idTorrent, token, files = 'all') => {
     log(`select file ${idTorrent}`);
 
-    const options = {
-        method: 'POST',
-        uri: `${config.apiEndpoint}/torrents/selectFiles/${idTorrent}?auth_token=${token}`,
-        json: true,
-        form: {
-            files,
-        },
-    };
+    try {
+        await fetch(`${config.apiEndpoint}/torrents/selectFiles/${idTorrent}?auth_token=${token}`, {
+            method: 'POST',
+            body: JSON.stringify({ files }),
+        });
+    } catch (e) {
+        handleErrorMessage(e);
+    }
+};
 
-    let data;
-    yield rp(options).then((body) => {
-        data = body;
-    }).catch(error);
-
-    return data;
-}
-
-export function* addMagnet(magnet, token) {
+export const addMagnet = async (magnet, token) => {
     log(`add magnet ${magnet}`);
 
-    const options = {
-        method: 'POST',
-        uri: `${config.apiEndpoint}/torrents/addMagnet?auth_token=${token}`,
-        json: true,
-        form: {
-            magnet: encodeURI(magnet),
-            host: 'uptobox.com',
-        },
-    };
+    try {
+        const res = await fetch(`${config.apiEndpoint}/torrents/addMagnet?auth_token=${token}`, {
+            method: 'POST',
+            body: JSON.stringify({
+                magnet: encodeURI(magnet),
+                host: 'uptobox.com',
+            }),
+        });
+        const data = (await res.json()).id;
+        return data;
+    } catch (e) {
+        return handleErrorMessage(e);
+    }
+};
 
-    let data;
-    yield rp(options).then((body) => {
-        data = body;
-    }).catch(error);
-
-    return data.id;
-}
-
-export function* addTorrent(torrent, token) {
+export const addTorrent = async (torrent, token) => {
     log(`add torrent ${torrent}`);
 
-    const options = {
-        uri: `${config.apiEndpoint}/torrents/addTorrent?auth_token=${token}`,
-        json: true,
-    };
+    try {
+        const res = await fetch(`${config.apiEndpoint}/torrents/addTorrent?auth_token=${token}`, {
+            method: 'PUT',
+            body: await fs.createReadStream(torrent),
+        });
+        const data = (await res.json()).id;
+        return data;
+    } catch (e) {
+        return handleErrorMessage(e);
+    }
+};
 
-    let data;
-    yield fs.createReadStream(torrent).pipe(rp.put(options)).then((body) => {
-        data = body;
-    });
-
-    return data.id;
-}
-
-export function* convertTorrent(torrent, token) {
+export const convertTorrent = async (torrent, token) => {
     log(`convert torrent ${torrent}`);
 
     let idTorrent;
     if (torrent.match(/^magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{20,50}/i)) {
-        idTorrent = yield addMagnet(torrent, token);
+        idTorrent = await addMagnet(torrent, token);
     } else {
-        idTorrent = yield addTorrent(torrent, token);
+        idTorrent = await addTorrent(torrent, token);
     }
-    yield selectFile(idTorrent, token);
+    await selectFile(idTorrent, token);
 
     let link = [];
     let status = 'wait';
     let progressConvert = 0;
     const spinner = ora(`Convert torrent progress: ${progressConvert}% (${status})`).start();
     while (!link.length) {
-        const infos = yield getInfosTorrent(idTorrent, token);
+        const infos = await getInfosTorrent(idTorrent, token); // eslint-disable-line
         status = infos.status;
         link = infos.links;
         progressConvert = Number(infos.progress);
         spinner.text = `Convert torrent progress: ${progressConvert}% (${status})`;
-        yield sleep(config.requestDelay);
+        await sleep(config.requestDelay); // eslint-disable-line
     }
     spinner.stop();
 
     console.log(`Convert finish: ${link.toString()}`);
     return link.toString();
-}
+};
