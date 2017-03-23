@@ -62,29 +62,29 @@ const torrentInfos = {
 const token = 'APS7T57AXM7G3U7KCT57NYCVAY';
 
 describe('torrent', () => {
-    it('should return torrent informations', function* () {
+    it('should return torrent informations', async () => {
         server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
 
         const id = 'JKLJOIIA4545Z';
-        const infos = yield getInfosTorrent(id, token);
+        const infos = await getInfosTorrent(id, token);
         assert.equal(infos.filename, 'test.rar');
     });
 
-    it('should get torrent list', function* () {
+    it('should get torrent list', async () => {
         server.get('/torrents', (req, res) => res.json(torrentList));
 
-        const infos = yield getTorrentList(token);
+        const infos = await getTorrentList(token);
         assert.equal(infos.length, 2);
         assert.equal(infos[0].host, '1fichier.com');
     });
 
-    it('should select file', function* () {
+    it('should select file', async () => {
         server.post('/torrents/selectFiles/:id', (req, res) => res.json());
         const id = 'NLBUIGAEOXYYC';
-        yield selectFile(id, token);
+        await selectFile(id, token);
     });
 
-    it('should add magnet', function* () {
+    it('should add magnet', async () => {
         server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
         server.post('/torrents/addMagnet', (req, res) => res.json({
             id: 'NLBUIGAEOXYYC',
@@ -92,11 +92,11 @@ describe('torrent', () => {
         }));
 
         const magnet = 'magnet:?xt=urn:btih:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
-        const id = yield addMagnet(magnet, token);
+        const id = await addMagnet(magnet, token);
         assert.equal(id, 'NLBUIGAEOXYYC');
     });
 
-    it('should add torrent', function* () {
+    it('should add torrent', async () => {
         server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
         server.put('/torrents/addTorrent', (req, res) => res.json({
             id: 'JHGTA554AZEDF',
@@ -104,11 +104,11 @@ describe('torrent', () => {
         }));
 
         const torrentFile = `${__dirname}/../fixtures/test.torrent`;
-        const id = yield addTorrent(torrentFile, token);
+        const id = await addTorrent(torrentFile, token);
         assert.equal(id, 'JHGTA554AZEDF');
     });
 
-    it('should convert magnet to ddl file', function* () {
+    it('should convert magnet to ddl file', async () => {
         server.post('/torrents/selectFiles/:id', (req, res) => res.json());
         server.get('/torrents', (req, res) => res.json(torrentList));
         server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
@@ -118,11 +118,11 @@ describe('torrent', () => {
         }));
 
         const magnet = 'magnet:?xt=urn:btih:XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
-        const link = yield convertTorrent(magnet, token);
+        const link = await convertTorrent(magnet, token);
         assert.equal(link, 'http://uptobox.com/xxxxxxxxxxxx');
     });
 
-    it('should convert torrent to ddl file', function* () {
+    it('should convert torrent to ddl file', async () => {
         server.post('/torrents/selectFiles/:id', (req, res) => res.json());
         server.get('/torrents', (req, res) => res.json(torrentList));
         server.get('/torrents/info/:id', (req, res) => res.json(torrentInfos));
@@ -132,7 +132,7 @@ describe('torrent', () => {
         }));
 
         const torrentFile = `${__dirname}/../fixtures/test.torrent`;
-        const link = yield convertTorrent(torrentFile, token);
+        const link = await convertTorrent(torrentFile, token);
         assert.equal(link, 'http://uptobox.com/xxxxxxxxxxxx');
     });
 });

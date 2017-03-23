@@ -1,20 +1,20 @@
 import config from 'config';
 import debug from 'debug';
-import { request } from './utils';
+import fetch from 'node-fetch';
 
 const log = debug('unrestrict');
 
-export default function* unrestrict(link, token) {
+export default async (link, token) => {
     log(`unrestrict link ${link}`);
 
-    const options = {
+    const url = `${config.apiEndpoint}/unrestrict/link?auth_token=${token}`;
+    const res = await fetch(url, {
         method: 'POST',
-        uri: `${config.apiEndpoint}/unrestrict/link?auth_token=${token}`,
-        form: {
+        body: JSON.stringify({
             link,
-        },
-        json: true,
-    };
+        }),
+        headers: { 'Content-Type': 'application/json' },
+    });
 
-    return (yield request(options)).download;
-}
+    return (await res.json()).download;
+};
