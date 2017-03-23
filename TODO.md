@@ -17,3 +17,6 @@ TODO
 - [ ] Add async await
 - [ ] Add notification when error or download finish
 - [ ] https://github.com/mattallty/Caporal.js
+- [ ] https://github.com/jaredhanson/passport
+- [ ] Yaourt repository rdcli-git
+- [ ] https://github.com/ivanseidel/node-draftlog draftlog
