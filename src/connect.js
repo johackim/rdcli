@@ -1,23 +1,22 @@
 import config from 'config';
 import debug from 'debug';
-import { request } from './utils';
+import fetch from 'node-fetch';
 
 const log = debug('connect');
 
-export default function* getToken(username, password) {
+export default async function getToken(username, password) {
     log('connect to real-debrid.com');
 
-    const options = {
+    const url = `${config.apiBaseUrl}/oauth/v2/token`;
+    const res = await fetch(url, {
         method: 'POST',
-        uri: `${config.apiBaseUrl}/oauth/v2/token`,
-        form: {
+        body: JSON.stringify({
             username,
             password,
             client_id: config.clientId,
             grant_type: 'password',
-        },
-        json: true,
-    };
+        }),
+    });
 
-    return (yield request(options)).access_token;
+    return (await res.json()).access_token;
 }
