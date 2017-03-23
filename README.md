@@ -14,7 +14,7 @@ Download DDL links, magnets and torrent files.
 
 ## Installation
 
-`npm i -g rdcli`
+`npm install --global rdcli`
 
 And set your real-debrid account as enviroment variable on your `~/.bashrc`
 

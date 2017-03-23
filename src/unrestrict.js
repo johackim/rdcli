@@ -1,28 +1,24 @@
-import rp from 'request-promise';
 import config from 'config';
 import debug from 'debug';
-import handleErrorMessage from './handleErrorMessage';
+import fetch from 'node-fetch';
+import handleErrorMessage from './utils';
 
 const log = debug('unrestrict');
 
-export default function* unrestrict(link, token) {
+export default async (link, token) => {
     log(`unrestrict link ${link}`);
 
-    const options = {
-        method: 'POST',
-        uri: `${config.apiEndpoint}/unrestrict/link?auth_token=${token}`,
-        form: {
-            link,
-        },
-        json: true,
-    };
-
-    let data;
-    yield rp(options).then((body) => {
-        data = body.download;
-    }).catch((e) => {
-        handleErrorMessage(e.error.error_code, e);
-    });
-
-    return data;
-}
+    try {
+        const url = `${config.apiEndpoint}/unrestrict/link?auth_token=${token}`;
+        const res = await fetch(url, {
+            method: 'POST',
+            body: JSON.stringify({
+                link,
+            }),
+            headers: { 'Content-Type': 'application/json' },
+        });
+        return (await res.json()).download;
+    } catch (e) {
+        return handleErrorMessage(e);
+    }
+};
