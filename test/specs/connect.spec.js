@@ -1,7 +1,7 @@
 import getToken from '../../src/connect';
 
 describe('connect', () => {
-    it('should return access token', function* () {
+    it('should return access token', async () => {
         server.post('/oauth/v2/token', (req, res) => res.json({
             access_token: 'APS7T57AXM7G3U7KCT57NYCVAY',
             expires_in: 3600,
@@ -12,11 +12,11 @@ describe('connect', () => {
         const username = 'username';
         const password = 'password';
 
-        const token = yield getToken(username, password);
+        const token = await getToken(username, password);
         assert.equal(token, 'APS7T57AXM7G3U7KCT57NYCVAY');
     });
 
-    it.skip('should return error if bad logins', function* () {
+    it.skip('should return error if bad logins', async () => {
         server.post('/oauth/v2/token', (req, res) => res.status(403).json({
             error: 'invalid_login',
             error_code: 12,
@@ -25,7 +25,7 @@ describe('connect', () => {
         const username = 'username';
         const password = 'password';
 
-        assert.throws(yield getToken(username, password, Error, 'Invalid login'));
+        assert.throws(await getToken(username, password, Error, 'Invalid login'));
     });
 
     afterEach(() => {

@@ -12,4 +12,11 @@ TODO
 - [ ] Optimize CPU for big files or many rdcli instances
 - [ ] Two-factor authentication (force_twofactor: true)
 - [ ] Makefile with file input
-- [ ] Test [fetch](https://github.com/github/fetch)
+- [ ] Replace request-promise by [fetch](https://github.com/github/fetch)
+- [ ] Remake screencast
+- [ ] Add async await
+- [ ] Add notification when error or download finish
+- [ ] https://github.com/mattallty/Caporal.js
+- [ ] https://github.com/jaredhanson/passport
+- [ ] Yaourt repository rdcli-git
+- [ ] https://github.com/ivanseidel/node-draftlog draftlog
