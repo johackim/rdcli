@@ -22,7 +22,7 @@ deploy: ## Deploy
 	npm publish
 
 lint:
-	@ ./node_modules/.bin/eslint src/
+	@ ./node_modules/.bin/eslint src/ test/
 
 lint-fix:
 	@ ./node_modules/.bin/eslint --fix src/
