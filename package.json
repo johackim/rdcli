@@ -21,6 +21,7 @@
   "author": "jcherqui",
   "license": "MIT",
   "dependencies": {
+    "async-file": "^2.0.2",
     "babel-polyfill": "^6.23.0",
     "chai": "^3.5.0",
     "chalk": "^1.1.3",
