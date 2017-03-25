@@ -3,6 +3,7 @@ language: node_js
 node_js:
   - "4"
 script:
+  - make build
   - make test
 cache:
   directories:
