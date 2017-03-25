@@ -5,8 +5,8 @@ import handleErrorMessage from './utils';
 export default async function (url, opts = { method: 'GET' }) {
     const res = await fetch(url, {
         method: opts.method,
-        body: querystring.stringify(opts.body),
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: (typeof opts.body !== 'undefined' && opts.body.constructor.name === 'Buffer') ? opts.body : querystring.stringify(opts.body),
     });
 
     let data = await res.text();
