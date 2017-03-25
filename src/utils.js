@@ -1,5 +1,5 @@
 export default function handleErrorMessage(error) {
-    const errorCode = error.error.error_code;
+    const errorCode = error.error_code;
 
     switch (errorCode) {
     case 1:
