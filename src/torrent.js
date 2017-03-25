@@ -1,6 +1,6 @@
 import config from 'config';
 import debug from 'debug';
-import fs from 'fs';
+import * as fs from 'async-file';
 import ora from 'ora';
 import sleep from 'co-sleep';
 import fetch from './fetch';
@@ -49,7 +49,7 @@ export const addTorrent = async (torrent, token) => {
 
     const data = await fetch(`${config.apiEndpoint}/torrents/addTorrent?auth_token=${token}`, {
         method: 'PUT',
-        body: await fs.createReadStream(torrent),
+        body: await fs.readFile(torrent),
     });
 
     return data.id;
