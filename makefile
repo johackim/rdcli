@@ -11,6 +11,9 @@ build: ## Build with babel
 run: ## Run with babel
 	@ ./node_modules/.bin/babel-node src/rdcli.js $(filter-out $@,$(MAKECMDGOALS))
 
+dev: ## Run with babel
+	@ NODE_ENV=dev ./node_modules/.bin/babel-node src/rdcli.js $(filter-out $@,$(MAKECMDGOALS))
+
 debug: ## Run with babel (with debug)
 	@ DEBUG=torrent,download,connect,unrestrict ./node_modules/.bin/babel-node src/rdcli.js $(filter-out $@,$(MAKECMDGOALS))
 

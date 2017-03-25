@@ -1,5 +1,5 @@
 export default function handleErrorMessage(error) {
-    const errorCode = error.error.error_code;
+    const errorCode = error.error_code;
 
     switch (errorCode) {
     case 1:
@@ -18,10 +18,14 @@ export default function handleErrorMessage(error) {
         throw new Error('Unsupported hoster');
     case 20:
         throw new Error('Hoster not available for free users');
+    case 21:
+        throw new Error('Too many active downloads');
     case 24:
         throw new Error('Invalid link');
+    case 30:
+        throw new Error('Torrent file invalid');
     default:
-        throw new Error(error);
+        throw new Error(error.error);
     }
 }
 
