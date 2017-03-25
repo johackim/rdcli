@@ -15,7 +15,7 @@ export default async function (url, opts = { method: 'GET' }) {
 
     data = JSON.parse(data);
 
-    if (res.status !== 200) {
+    if (![200, 201].includes(res.status)) {
         return handleErrorMessage(data);
     }
 
