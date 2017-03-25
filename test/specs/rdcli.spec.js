@@ -1,10 +1,18 @@
-import { exec } from 'child_process';
+import { exec } from 'child-process-promise';
 
 describe('rdcli', () => {
-    it('should exec rdcli command', () => {
-        exec('node ./build/rdcli.js', (error, stdout, stderr) => {
-            assert.isNotNull(stdout);
-            assert.equal(stderr, '');
-        });
+    before(() => {
+        delete process.env.NODE_ENV;
+    });
+
+    it('should exec rdcli command', async () => {
+        const { stdout, stderr } = await exec('node ./build/rdcli.js');
+
+        assert.isNotNull(stdout);
+        assert.equal(stderr, '');
+    });
+
+    after(() => {
+        process.env.NODE_ENV = 'test';
     });
 });
