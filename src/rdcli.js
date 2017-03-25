@@ -4,7 +4,6 @@ import 'babel-polyfill';
 import program from 'commander';
 import prompt from 'co-prompt';
 import ora from 'ora';
-import co from 'co';
 import chalk from 'chalk';
 import fs from 'fs';
 import { download, waitDuringScan } from './download';
@@ -17,26 +16,25 @@ program
     .version(pjson.version)
     .description('Download links, magnets and torrent files.')
     .usage('<url|magnet|torrent>')
-    .action(arg => co(function* action() {
+    .action(async (arg) => {
         try {
-            const username = process.env.REALDEBRID_USERNAME || (yield prompt('Username: '));
-            const password = process.env.REALDEBRID_PASSWORD || (yield prompt.password('Password: '));
-            const token = yield getToken(username, password);
+            const username = process.env.REALDEBRID_USERNAME || (await prompt('Username: '));
+            const password = process.env.REALDEBRID_PASSWORD || (await prompt.password('Password: '));
+            const token = await getToken(username, password);
 
             let link;
             if (arg.match(/^(https?:\/\/)([\da-z.-]+).([a-z.]{2,6})([/\w? .-]*)*\/?$/)) {
                 link = arg;
-            } else if (arg.match(/^magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{20,50}/i)
-                || fs.existsSync(arg)) {
-                link = yield convertTorrent(arg, token);
+            } else if (arg.match(/^magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{20,50}/i) || fs.existsSync(arg)) {
+                link = await convertTorrent(arg, token);
             } else {
                 console.log('Usage: rdcli <url|magnet|torrent>');
                 process.exit();
             }
 
-            const unrestrictLink = yield unrestrict(link, token);
+            const unrestrictLink = await unrestrict(link, token);
             console.log(`Start download : ${unrestrictLink}`);
-            yield waitDuringScan(link);
+            await waitDuringScan(link);
 
             const spinner = ora('Download: 0.0% Speed: 0Mbps').start();
             download(unrestrictLink, (res) => {
@@ -54,7 +52,7 @@ program
             console.error(`\n${chalk.red(e)}`);
             process.exit();
         }
-    }))
+    })
     .parse(process.argv);
 
 if (!process.argv.slice(2).length) {

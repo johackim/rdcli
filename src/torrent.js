@@ -1,81 +1,58 @@
 import config from 'config';
 import debug from 'debug';
-import fs from 'fs';
+import * as fs from 'async-file';
 import ora from 'ora';
 import sleep from 'co-sleep';
-import fetch from 'node-fetch';
-import handleErrorMessage from './utils';
+import fetch from './fetch';
 
 const log = debug('torrent');
 
 export const getInfosTorrent = async (idTorrent, token) => {
     log(`get infos torrent ${idTorrent}`);
 
-    try {
-        const res = await fetch(`${config.apiEndpoint}/torrents/info/${idTorrent}?auth_token=${token}`);
-        const data = await res.json();
-        return data;
-    } catch (e) {
-        return handleErrorMessage(e);
-    }
+    const data = await fetch(`${config.apiEndpoint}/torrents/info/${idTorrent}?auth_token=${token}`);
+    return data;
 };
 
 export const getTorrentList = async (token) => {
     log('get torrent list');
 
-    try {
-        const res = await fetch(`${config.apiEndpoint}/torrents?auth_token=${token}`);
-        const data = await res.json();
-        return data;
-    } catch (e) {
-        return handleErrorMessage(e);
-    }
+    const data = await fetch(`${config.apiEndpoint}/torrents?auth_token=${token}`);
+    return data;
 };
 
 export const selectFile = async (idTorrent, token, files = 'all') => {
     log(`select file ${idTorrent}`);
 
-    try {
-        await fetch(`${config.apiEndpoint}/torrents/selectFiles/${idTorrent}?auth_token=${token}`, {
-            method: 'POST',
-            body: JSON.stringify({ files }),
-        });
-    } catch (e) {
-        handleErrorMessage(e);
-    }
+    await fetch(`${config.apiEndpoint}/torrents/selectFiles/${idTorrent}?auth_token=${token}`, {
+        method: 'POST',
+        body: { files },
+    });
 };
 
 export const addMagnet = async (magnet, token) => {
     log(`add magnet ${magnet}`);
 
-    try {
-        const res = await fetch(`${config.apiEndpoint}/torrents/addMagnet?auth_token=${token}`, {
-            method: 'POST',
-            body: JSON.stringify({
-                magnet: encodeURI(magnet),
-                host: 'uptobox.com',
-            }),
-        });
-        const data = (await res.json()).id;
-        return data;
-    } catch (e) {
-        return handleErrorMessage(e);
-    }
+    const data = await fetch(`${config.apiEndpoint}/torrents/addMagnet?auth_token=${token}`, {
+        method: 'POST',
+        body: {
+            magnet: encodeURI(magnet),
+            host: 'uptobox.com',
+        },
+    });
+
+    return data.id;
 };
 
 export const addTorrent = async (torrent, token) => {
     log(`add torrent ${torrent}`);
 
-    try {
-        const res = await fetch(`${config.apiEndpoint}/torrents/addTorrent?auth_token=${token}`, {
-            method: 'PUT',
-            body: await fs.createReadStream(torrent),
-        });
-        const data = (await res.json()).id;
-        return data;
-    } catch (e) {
-        return handleErrorMessage(e);
-    }
+    const data = await fetch(`${config.apiEndpoint}/torrents/addTorrent?auth_token=${token}`, {
+        method: 'PUT',
+        body: await fs.readFile(torrent),
+    });
+
+    return data.id;
 };
 
 export const convertTorrent = async (torrent, token) => {
