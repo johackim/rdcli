@@ -2,15 +2,15 @@ Rdcli
 ===
 
 [![npm version](https://badge.fury.io/js/rdcli.svg)](https://badge.fury.io/js/rdcli)
-[![Build Status](https://travis-ci.org/jcherqui/rdcli.svg?branch=master)](https://travis-ci.org/jcherqui/rdcli/)
+[![Build Status](https://travis-ci.org/stoneo/rdcli.svg?branch=master)](https://travis-ci.org/stoneo/rdcli/)
 [![npm download](https://img.shields.io/npm/dt/rdcli.svg)](https://www.npmjs.com/package/rdcli)
-[![Code Climate](https://codeclimate.com/github/jcherqui/rdcli/badges/gpa.svg)](https://codeclimate.com/github/jcherqui/rdcli)
+[![Code Climate](https://codeclimate.com/github/stoneo/rdcli/badges/gpa.svg)](https://codeclimate.com/github/stoneo/rdcli)
 
 > A simple CLI tool to unrestrict links with real-debrid.com
 
 Download DDL links, magnets and torrent files.
 
-[![asciicast](https://raw.githubusercontent.com/jcherqui/rdcli/master/screencast.gif)](https://raw.githubusercontent.com/jcherqui/rdcli/master/screencast.gif)
+[![asciicast](https://raw.githubusercontent.com/stoneo/rdcli/master/screencast.gif)](https://raw.githubusercontent.com/stoneo/rdcli/master/screencast.gif)
 
 ## Installation
 

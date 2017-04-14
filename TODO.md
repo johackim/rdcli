@@ -6,6 +6,7 @@ TODO
 - [x] Add [request-promise](https://www.npmjs.com/package/request-promise)
 - [x] Handle error message for free accounts
 - [x] Add in AUR repository
+- [ ] Authorize remote download flag
 - [ ] Handle Ctrl+u and backspace in prompt password
 - [ ] Handle multi-link
 - [ ] Update token after expiration
@@ -20,3 +21,4 @@ TODO
 - [ ] https://github.com/jaredhanson/passport
 - [ ] Yaourt repository rdcli-git
 - [ ] https://github.com/ivanseidel/node-draftlog draftlog
+- [ ] Deplace constants torrentList, torrentInfos on fixtures directory
