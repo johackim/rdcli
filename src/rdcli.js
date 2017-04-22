@@ -42,14 +42,14 @@ program
                     spinner.text = `Download: ${res.percent}% Speed: ${res.mbps} ${res.bytesWriting}/${res.totalSize} Remaining: ${res.remaining}sec`; // eslint-disable-line max-len
                 } else if (res === 'end') {
                     spinner.stop();
-                    console.log('File downloaded.');
+                    spinner.succeed('File downloaded.');
                 } else {
                     spinner.stop();
                     console.log(`Error: ${res}`);
                 }
             });
         } catch (e) {
-            console.error(`\n${chalk.red(e)}`);
+            console.error(`${chalk.red(e)}`);
             process.exit();
         }
     })
