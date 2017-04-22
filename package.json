@@ -32,7 +32,7 @@
     "debug": "^2.6.3",
     "fs": "^0.0.2",
     "humanize": "^0.0.9",
-    "ora": "^1.1.0",
+    "ora": "^1.2.0",
     "request": "^2.81.0",
     "request-progress": "^3.0.0",
     "request-promise": "^4.2.0",
