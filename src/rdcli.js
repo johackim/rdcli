@@ -16,7 +16,8 @@ program
     .version(pjson.version)
     .description('Download links, magnets and torrent files.')
     .usage('<url|magnet|torrent>')
-    .action(async (arg) => {
+    .option('-r, --remote', 'Remote traffic')
+    .action(async (arg, options) => {
         try {
             const username = process.env.REALDEBRID_USERNAME || (await prompt('Username: '));
             const password = process.env.REALDEBRID_PASSWORD || (await prompt.password('Password: '));
@@ -32,7 +33,7 @@ program
                 process.exit();
             }
 
-            const unrestrictLink = await unrestrict(link, token);
+            const unrestrictLink = await unrestrict(link, token, options.remote);
             console.log(`Start download : ${unrestrictLink}`);
             await waitDuringScan(link);
 
