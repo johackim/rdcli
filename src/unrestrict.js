@@ -9,8 +9,7 @@ export default async (link, token, remote = false) => {
 
     const data = await fetch(`${config.apiEndpoint}/unrestrict/link?auth_token=${token}`, {
         method: 'POST',
-        body: { link },
-        remote: Number(remote),
+        body: { link, remote: Number(remote) },
     });
 
     return data.download;
