@@ -1,7 +1,7 @@
 .PHONY: build test
 
 install: ## Install dependencies
-	npm install
+	@ yarn install
 
 build: ## Build with babel
 	@ mkdir -p build
@@ -12,6 +12,7 @@ run: ## Run with babel
 	@ ./node_modules/.bin/babel-node src/rdcli.js $(filter-out $@,$(MAKECMDGOALS))
 
 dev: ## Run with babel
+	@ cp -n config/dev.json.dist config/dev.json
 	@ NODE_ENV=dev ./node_modules/.bin/babel-node src/rdcli.js $(filter-out $@,$(MAKECMDGOALS))
 
 debug: ## Run with babel (with debug)

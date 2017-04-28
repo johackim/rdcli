@@ -6,6 +6,7 @@ TODO
 - [x] Add [request-promise](https://www.npmjs.com/package/request-promise)
 - [x] Handle error message for free accounts
 - [x] Add in AUR repository
+- [ ] Add url option to show only download url link
 - [ ] Authorize remote download flag
 - [ ] Handle Ctrl+u and backspace in prompt password
 - [ ] Handle multi-link
