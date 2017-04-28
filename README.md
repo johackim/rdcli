@@ -6,9 +6,7 @@ Rdcli
 [![npm download](https://img.shields.io/npm/dt/rdcli.svg)](https://www.npmjs.com/package/rdcli)
 [![Code Climate](https://codeclimate.com/github/stoneo/rdcli/badges/gpa.svg)](https://codeclimate.com/github/stoneo/rdcli)
 
-> A simple CLI tool to unrestrict links with real-debrid.com
-
-Download DDL links, magnets and torrent files.
+> The simple way to download and unrestrict DDL files, torrents and magnets.
 
 [![asciicast](https://raw.githubusercontent.com/stoneo/rdcli/master/screencast.gif)](https://raw.githubusercontent.com/stoneo/rdcli/master/screencast.gif)
 
