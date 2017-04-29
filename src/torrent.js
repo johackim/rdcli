@@ -2,7 +2,7 @@ import config from 'config';
 import debug from 'debug';
 import * as fs from 'async-file';
 import ora from 'ora';
-import sleep from 'co-sleep';
+import sleep from 'sleep-promise';
 import fetch from './fetch';
 
 const log = debug('torrent');

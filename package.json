@@ -1,6 +1,6 @@
 {
   "name": "rdcli",
-  "version": "1.4.1",
+  "version": "1.4.2",
   "description": "A simple CLI tool to unrestrict links with real-debrid.com",
   "homepage": "https://github.com/stoneo/rdcli",
   "repository": {
@@ -26,7 +26,7 @@
     "chai": "^3.5.0",
     "chalk": "^1.1.3",
     "co-prompt": "^1.0.0",
-    "co-sleep": "0.0.1",
+    "sleep-promise": "^2.0.0",
     "commander": "^2.9.0",
     "config": "git+https://github.com/stoneo/node-config",
     "debug": "^2.6.3",
