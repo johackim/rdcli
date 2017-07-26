@@ -929,9 +929,9 @@ concat-stream@^1.5.2:
     readable-stream "^2.2.2"
     typedarray "^0.0.6"
 
-"config@git+https://github.com/stoneo/node-config":
+"config@git+https://github.com/ston3o/node-config":
   version "1.20.2"
-  resolved "git+https://github.com/stoneo/node-config#2e1e00d90e9495385098ded74df773384c6458c4"
+  resolved "git+https://github.com/ston3o/node-config#2e1e00d90e9495385098ded74df773384c6458c4"
   dependencies:
     json5 "0.4.0"
 

@@ -2,13 +2,13 @@ Rdcli
 ===
 
 [![npm version](https://badge.fury.io/js/rdcli.svg)](https://badge.fury.io/js/rdcli)
-[![Build Status](https://travis-ci.org/stoneo/rdcli.svg?branch=master)](https://travis-ci.org/stoneo/rdcli/)
+[![Build Status](https://travis-ci.org/ston3o/rdcli.svg?branch=master)](https://travis-ci.org/ston3o/rdcli/)
 [![npm download](https://img.shields.io/npm/dt/rdcli.svg)](https://www.npmjs.com/package/rdcli)
-[![Code Climate](https://codeclimate.com/github/stoneo/rdcli/badges/gpa.svg)](https://codeclimate.com/github/stoneo/rdcli)
+[![Code Climate](https://codeclimate.com/github/ston3o/rdcli/badges/gpa.svg)](https://codeclimate.com/github/ston3o/rdcli)
 
 > The simple way to download and unrestrict DDL files, torrents and magnets.
 
-[![asciicast](https://raw.githubusercontent.com/stoneo/rdcli/master/screencast.gif)](https://raw.githubusercontent.com/stoneo/rdcli/master/screencast.gif)
+[![asciicast](https://raw.githubusercontent.com/ston3o/rdcli/master/screencast.gif)](https://raw.githubusercontent.com/ston3o/rdcli/master/screencast.gif)
 
 ## Installation
 
