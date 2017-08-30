@@ -19,7 +19,7 @@
     "rdcli": "build/rdcli.js"
   },
   "author": "ston3o",
-  "license": "MIT",
+  "license": "GPL-3.0",
   "dependencies": {
     "async-file": "^2.0.2",
     "babel-polyfill": "^6.23.0",
