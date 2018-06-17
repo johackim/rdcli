@@ -22,22 +22,13 @@
   "author": "ston3o",
   "license": "GPL-3.0",
   "dependencies": {
-    "async-file": "^2.0.2",
     "babel-polyfill": "^6.26.0",
     "chai": "^4.1.2",
-    "chalk": "^2.4.1",
-    "co-prompt": "^1.0.0",
-    "sleep-promise": "^6.0.0",
     "commander": "^2.15.1",
-    "debug": "^3.1.0",
     "fs": "^0.0.2",
     "humanize": "^0.0.9",
     "ora": "^2.1.0",
-    "request": "^2.85.0",
-    "request-progress": "^3.0.0",
-    "request-promise": "^4.2.2",
     "node-fetch": "^2.1.2",
-    "url": "^0.11.0",
     "validator": "^10.3.0"
   },
   "devDependencies": {
@@ -52,8 +43,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
     "mocha": "^5.2.0",
-    "nock": "^9.3.3",
-    "np": "^2.20.1"
+    "nock": "^9.3.3"
   },
   "keywords": [
     "real-debrid",
