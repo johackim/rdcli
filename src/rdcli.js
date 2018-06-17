@@ -30,7 +30,7 @@ program
                 link = await convertTorrent(arg, token);
             } else {
                 console.log('Usage: rdcli <url|magnet|torrent>');
-                process.exit();
+                process.exit(1);
             }
 
             const unrestrictLink = await unrestrict(link, token);
@@ -56,7 +56,7 @@ program
             });
         } catch (e) {
             console.error(`${chalk.red(e)}`);
-            process.exit();
+            process.exit(2);
         }
     })
     .parse(process.argv);
