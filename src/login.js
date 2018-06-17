@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import querystring from 'querystring';
 
-export const getToken = async (username, password) => {
+export default async (username, password) => {
     const token = await new Promise((resolve, reject) => fetch(`${process.env.APIBASEURL}/oauth/v2/token`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -13,7 +13,7 @@ export const getToken = async (username, password) => {
         }),
     })
         .then(res => res.json())
-        .then(resolve)
+        .then(data => resolve(data.access_token))
         .catch(reject));
 
     return token;

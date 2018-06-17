@@ -1,6 +1,5 @@
 {
     "globals": {
-        "server",
         "assert"
     },
     "env": {

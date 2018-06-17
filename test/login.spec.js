@@ -1,5 +1,5 @@
 import nock from 'nock';
-import { getToken } from '../src/login';
+import login from '../src/login';
 
 describe('Login', () => {
     it('Should return access token', async () => {
@@ -13,8 +13,8 @@ describe('Login', () => {
         const username = process.env.REALDEBRID_USERNAME;
         const password = process.env.REALDEBRID_PASSWORD;
 
-        const token = await getToken(username, password);
-        assert.equal(token.access_token, 'APS7T57AXM7G3U7KCT57NYCVAY');
+        const token = await login(username, password);
+        assert.equal(token, 'APS7T57AXM7G3U7KCT57NYCVAY');
     });
 
     it('Should return error if bad logins', async () => {
@@ -26,7 +26,6 @@ describe('Login', () => {
         const username = 'badusername';
         const password = 'badpassword';
 
-        const token = await getToken(username, password);
-        assert.equal(token.error, 'invalid_login');
+        assert.throws(await login(username, password, Error, 'Invalid login'));
     });
 });

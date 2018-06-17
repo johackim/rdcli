@@ -37,7 +37,8 @@
     "request-progress": "^3.0.0",
     "request-promise": "^4.2.2",
     "node-fetch": "^2.1.2",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "validator": "^10.3.0"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
