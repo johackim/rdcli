@@ -2,11 +2,9 @@
 engines:
   duplication:
     enabled: true
-    config:
-      languages:
-        - javascript
   eslint:
     enabled: true
+    channel: "eslint-4"
   fixme:
     enabled: true
 ratings:
@@ -14,4 +12,3 @@ ratings:
     - "**.js"
 exclude_paths:
   - node_modules/
-  - test/

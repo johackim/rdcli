@@ -2,16 +2,12 @@
 
 import 'babel-polyfill';
 import program from 'commander';
-import fs from 'fs';
 import ora from 'ora';
 import login from './login';
-import { magnetToDDL, torrentToDDL } from './converter';
+import { magnetToDDL, torrentToDDL, isMagnet, isTorrent } from './converter';
 import unrestrict from './unrestrict';
 import download from './download';
 import { version } from '../package.json';
-
-const isMagnet = magnet => magnet.match(/^magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{20,50}/i);
-const isTorrent = torrent => torrent.match(/\.torrent$/) && fs.existsSync(torrent);
 
 const action = async (arg) => {
     const spinner = ora({ text: 'Connect to real-debrid', enabled: !program.print }).start();
