@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import querystring from 'querystring';
 
 export default async (link, token) => {
-    const unrestrictLink = await new Promise((resolve, reject) => fetch(`${process.env.APIENDPOINT}/unrestrict/link`, {
+    const unrestrictLink = await new Promise((resolve, reject) => fetch(`${process.env.API_ENDPOINT}/unrestrict/link`, {
         method: 'POST',
         headers: { Authorization: `Bearer ${token}` },
         body: querystring.stringify({ link }),

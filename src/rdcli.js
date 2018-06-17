@@ -41,7 +41,7 @@ const action = async (arg) => {
 };
 
 program
-    .version(version)
+    .version(version, '-v, --version')
     .description('Download links, magnets and torrent files.')
     .usage('<url|magnet|torrent>')
     .option('-p, --print', 'Print unrestricted link only')

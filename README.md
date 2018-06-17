@@ -18,17 +18,18 @@ Rdcli
 npm install --global rdcli
 ```
 
-And set your real-debrid account as enviroment variable on your `~/.bashrc`
-
-```bash
-export REALDEBRID_USERNAME=your_username
-export REALDEBRID_PASSWORD=your_password
-```
-
 ## Usage
 
 ```bash
-rdcli <url|magnet|torrent>
+Usage: rdcli <url|magnet|torrent>
+
+Download links, magnets and torrent files.
+
+Options:
+
+  -v, --version  output the version number
+  -p, --print    Print unrestricted link only
+  -h, --help     output usage information
 ```
 
 ## Running the tests

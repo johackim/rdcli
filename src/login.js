@@ -2,11 +2,11 @@ import fetch from 'node-fetch';
 import querystring from 'querystring';
 
 export default async (username, password) => {
-    const token = await new Promise((resolve, reject) => fetch(`${process.env.APIBASEURL}/oauth/v2/token`, {
+    const token = await new Promise((resolve, reject) => fetch(`${process.env.API_BASEURL}/oauth/v2/token`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: querystring.stringify({
-            client_id: process.env.CLIENTID,
+            client_id: process.env.CLIENT_ID,
             username,
             password,
             grant_type: 'password',

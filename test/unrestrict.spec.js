@@ -5,7 +5,7 @@ describe('Unrestrict', () => {
     it('Should unrestrict link', async () => {
         const token = 'APS7T57AXM7G3U7KCT57NYCVAY';
 
-        nock(process.env.APIENDPOINT, { reqHeaders: { Authorization: `Bearer ${token}` } }).post('/unrestrict/link').reply(200, {
+        nock(process.env.API_ENDPOINT, { reqHeaders: { Authorization: `Bearer ${token}` } }).post('/unrestrict/link').reply(200, {
             id: '4ALWGL4BN4C4G',
             filename: 'test.rar',
             filesize: 200000000,
