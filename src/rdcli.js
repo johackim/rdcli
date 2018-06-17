@@ -16,6 +16,7 @@ program
     .version(pjson.version)
     .description('Download links, magnets and torrent files.')
     .usage('<url|magnet|torrent>')
+    .option('-p, --print', 'Print unrestricted link only')
     .action(async (arg) => {
         try {
             const username = process.env.REALDEBRID_USERNAME || (await prompt('Username: '));
@@ -33,9 +34,14 @@ program
             }
 
             const unrestrictLink = await unrestrict(link, token);
+
+            if (program.print) {
+                console.log(unrestrictLink);
+                process.exit(0);
+            }
+
             console.log(`Start download : ${unrestrictLink}`);
             await waitDuringScan(link);
-
             const spinner = ora('Download: 0.0% Speed: 0Mbps').start();
             download(unrestrictLink, (res) => {
                 if (res.percent) {
