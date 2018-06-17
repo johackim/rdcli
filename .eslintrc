@@ -4,12 +4,5 @@
         "indent": [2, 4],
         "no-console": [0],
         "func-names": [0]
-    },
-    "globals": {
-        "server",
-        "assert"
-    },
-    "env": {
-        "mocha": true
     }
 }

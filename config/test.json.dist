@@ -1,6 +1,0 @@
-{
-    "apiBaseUrl": "http://localhost:3000",
-    "apiEndpoint": "http://localhost:3000",
-    "clientId": "XXXXXXXXXXXXX",
-    "requestDelay": 0
-}

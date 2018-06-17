@@ -1,15 +1,12 @@
 ---
-
-dist: precise
+dist: trusty
 language: node_js
 node_js:
-  - "4"
+  - 8
 script:
-  - make build
-  - make test
-cache:
-  directories:
-    - node_modules
+  - npm install
+  - npm test
+cache: false
 branches:
   only:
     - master

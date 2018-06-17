@@ -1,0 +1,9 @@
+{
+    "globals": {
+        "server",
+        "assert"
+    },
+    "env": {
+        "mocha": true
+    }
+}
