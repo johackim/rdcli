@@ -1,6 +1,6 @@
 {
   "name": "rdcli",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "A simple CLI tool to unrestrict links with real-debrid.com",
   "homepage": "https://github.com/ston3o/rdcli",
   "repository": {
