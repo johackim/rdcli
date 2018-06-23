@@ -28,7 +28,13 @@ export REALDEBRID_PASSWORD=your_password
 ## Usage
 
 ```bash
-rdcli <url|magnet|torrent>
+Usage: rdcli <url|magnet|torrent>
+
+Options:
+
+  -V, --version  output the version number
+  -p, --print    Print unrestricted link only
+  -h, --help     output usage information
 ```
 
 ## Running the tests
