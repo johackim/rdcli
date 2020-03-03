@@ -5,7 +5,6 @@ Rdcli
 [![](https://img.shields.io/badge/license-GPL%20v3%2B-yellow.svg?style=flat-square&colorA=0d7377&colorB=44c2c7)](https://raw.githubusercontent.com/johackim/rdcli/master/LICENSE.txt)
 [![](https://img.shields.io/travis/johackim/rdcli.svg?style=flat-square&colorA=0d7377&colorB=44c2c7)](https://travis-ci.org/johackim/rdcli/branches)
 [![](https://img.shields.io/codeclimate/maintainability/johackim/rdcli.svg?style=flat-square&colorA=0d7377&colorB=44c2c7)](https://codeclimate.com/github/johackim/rdcli)
-[![](https://img.shields.io/badge/donate-liberapay-blue.svg?style=flat-square&colorA=0d7377&colorB=44c2c7)](https://liberapay.com/johackim/donate)
 [![](https://img.shields.io/npm/dt/rdcli.svg?style=flat-square&colorA=0d7377&colorB=44c2c7)](https://www.npmjs.com/package/rdcli)
 
 > The simple way to download and unrestrict DDL files, torrents and magnets.
