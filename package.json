@@ -12,8 +12,9 @@
   },
   "preferGlobal": true,
   "scripts": {
-    "prepublish": "make build",
-    "start": "NODE_ENV=dev ./node_modules/.bin/babel-node src/rdcli.js"
+    "prepublish": "npm run snyk-protect && make build",
+    "start": "NODE_ENV=dev ./node_modules/.bin/babel-node src/rdcli.js",
+    "snyk-protect": "snyk protect"
   },
   "bin": {
     "rdcli": "build/rdcli.js"
@@ -37,7 +38,8 @@
     "request-progress": "^3.0.0",
     "request-promise": "^4.2.0",
     "node-fetch": "^1.6.3",
-    "url": "^0.11.0"
+    "url": "^0.11.0",
+    "snyk": "^1.316.1"
   },
   "devDependencies": {
     "babel-cli": "^6.24.0",
@@ -66,5 +68,6 @@
     "torrent",
     "magnet",
     "cli"
-  ]
+  ],
+  "snyk": true
 }
