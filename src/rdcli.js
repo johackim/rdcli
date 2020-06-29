@@ -23,36 +23,37 @@ program
             const password = process.env.REALDEBRID_PASSWORD || (await prompt.password('Password: '));
             const token = await getToken(username, password);
 
-            let link;
+            let links;
             if (arg.match(/^(https?:\/\/)([\da-z.-]+).([a-z.]{2,6})([/\w? .-]*)*\/?$/)) {
-                link = arg;
+                links = [arg];
             } else if (arg.match(/^magnet:\?xt=urn:[a-z0-9]+:[a-z0-9]{20,50}/i) || fs.existsSync(arg)) {
-                link = await convertTorrent(arg, token);
+                links = await convertTorrent(arg, token);
             } else {
                 console.log('Usage: rdcli <url|magnet|torrent>');
                 process.exit(1);
             }
 
-            const unrestrictLink = await unrestrict(link, token);
-
-            if (program.print) {
-                console.log(unrestrictLink);
-                process.exit(0);
-            }
-
-            console.log(`Start download : ${unrestrictLink}`);
-            await waitDuringScan(link);
-            const spinner = ora('Download: 0.0% Speed: 0Mbps').start();
-            download(unrestrictLink, (res) => {
-                if (res.percent) {
-                    spinner.text = `Download: ${res.percent}% Speed: ${res.mbps} ${res.bytesWriting}/${res.totalSize} Remaining: ${res.remaining}sec`; // eslint-disable-line max-len
-                } else if (res === 'end') {
-                    spinner.stop();
-                    spinner.succeed('File downloaded.');
-                } else {
-                    spinner.stop();
-                    console.log(`Error: ${res}`);
+            links.forEach(async (link) => {
+                const unrestrictLink = await unrestrict(link, token);
+                if (program.print) {
+                    console.log(unrestrictLink);
+                    process.exit(0);
                 }
+
+                console.log(`Start download : ${unrestrictLink}`);
+                await waitDuringScan(links);
+                const spinner = ora('Download: 0.0% Speed: 0Mbps').start();
+                download(unrestrictLink, (res) => {
+                    if (res.percent) {
+                        spinner.text = `Download: ${res.percent}% Speed: ${res.mbps} ${res.bytesWriting}/${res.totalSize} Remaining: ${res.remaining}sec`; // eslint-disable-line max-len
+                    } else if (res === 'end') {
+                        spinner.stop();
+                        spinner.succeed('File downloaded.');
+                    } else {
+                        spinner.stop();
+                        console.log(`Error: ${res}`);
+                    }
+                });
             });
         } catch (e) {
             console.error(`${chalk.red(e)}`);

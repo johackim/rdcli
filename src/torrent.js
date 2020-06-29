@@ -66,20 +66,20 @@ export const convertTorrent = async (torrent, token) => {
     }
     await selectFile(idTorrent, token);
 
-    let link = [];
+    let links = [];
     let status = 'wait';
     let progressConvert = 0;
     const spinner = ora(`Convert torrent progress: ${progressConvert}% (${status})`).start();
-    while (!link.length) {
+    while (!links.length) {
         const infos = await getInfosTorrent(idTorrent, token); // eslint-disable-line
         status = infos.status;
-        link = infos.links;
+        links = infos.links;
         progressConvert = Number(infos.progress);
         spinner.text = `Convert torrent progress: ${progressConvert}% (${status})`;
         await sleep(config.requestDelay); // eslint-disable-line
     }
     spinner.stop();
 
-    console.log(`Convert finish: ${link.toString()}`);
-    return link.toString();
+    console.log(`Convert finish: ${links.toString()}`);
+    return links;
 };
