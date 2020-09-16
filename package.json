@@ -36,7 +36,7 @@
     "request": "^2.81.0",
     "request-progress": "^3.0.0",
     "request-promise": "^4.2.0",
-    "node-fetch": "^1.6.3",
+    "node-fetch": "^2.6.1",
     "url": "^0.11.0"
   },
   "devDependencies": {
