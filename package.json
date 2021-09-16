@@ -24,7 +24,7 @@
     "async-file": "^2.0.2",
     "babel-polyfill": "^6.23.0",
     "chai": "^3.5.0",
-    "chalk": "^1.1.3",
+    "chalk": "^2.0.0",
     "co-prompt": "^1.0.0",
     "sleep-promise": "^2.0.0",
     "commander": "^2.9.0",
