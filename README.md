@@ -1,55 +1,56 @@
-Rdcli
-===
+# Rdcli
 
-[![](https://img.shields.io/github/tag/johackim/rdcli.svg?label=version&style=flat-square&colorA=0d7377&colorB=44c2c7)](https://github.com/johackim/rdcli/releases)
-[![](https://img.shields.io/badge/license-GPL%20v3%2B-yellow.svg?style=flat-square&colorA=0d7377&colorB=44c2c7)](https://raw.githubusercontent.com/johackim/rdcli/master/LICENSE.txt)
-[![](https://img.shields.io/travis/johackim/rdcli.svg?style=flat-square&colorA=0d7377&colorB=44c2c7)](https://travis-ci.org/johackim/rdcli/branches)
-[![](https://img.shields.io/codeclimate/maintainability/johackim/rdcli.svg?style=flat-square&colorA=0d7377&colorB=44c2c7)](https://codeclimate.com/github/johackim/rdcli)
-[![](https://img.shields.io/npm/dt/rdcli.svg?style=flat-square&colorA=0d7377&colorB=44c2c7)](https://www.npmjs.com/package/rdcli)
+[![Version](https://img.shields.io/npm/v/rdcli?label=Version&style=flat&colorA=2B323B&colorB=1e2329)](https://www.npmjs.com/package/rdcli)
+[![License](https://img.shields.io/badge/license-GPL%20v3%2B-yellow.svg?label=License&style=flat&colorA=2B323B&colorB=1e2329)](https://raw.githubusercontent.com/johackim/rdcli/master/LICENSE.txt)
 
-> The simple way to download and unrestrict DDL files, torrents and magnets.
+The simple way to download and unrestrict DDL files, torrents and magnets.
 
 [![asciicast](https://raw.githubusercontent.com/johackim/rdcli/master/screencast.gif)](https://raw.githubusercontent.com/johackim/rdcli/master/screencast.gif)
 
-## Installation
+## 📋 Requirements
+
+- Node.js >= 22.12.0
+
+## 📦 Installation
 
 ```bash
-npm install --global rdcli
+npm i -g rdcli
 ```
 
-And set your real-debrid account as enviroment variable on your `~/.bashrc`
+And set your real-debrid account as environment variables on your `~/.bashrc`
 
 ```bash
 export REALDEBRID_USERNAME=your_username
 export REALDEBRID_PASSWORD=your_password
 ```
 
-## Usage
+## 📖 Usage
 
-```bash
+```txt
 Usage: rdcli <url|magnet|torrent>
 
-Options:
+Download links, magnets and torrent files.
 
+Options:
   -V, --version  output the version number
   -p, --print    Print unrestricted link only
-  -h, --help     output usage information
+  -h, --help     display help for command
 ```
 
-## Running the tests
+## 🧪 Running the tests
 
 ```bash
-make test
+npm test
 ```
 
-## Support me
-
+## 🎁 Support me
 
 Please support me with a one-time or a monthly donation and help me continue my activities.
 
 [![Github sponsor](https://img.shields.io/badge/sponsor-30363D?style=for-the-badge&logo=GitHub-Sponsors)](https://github.com/sponsors/johackim/)
-## License
 
-This project is licensed under the GNU GPL v3.0 - see the [LICENSE.txt](LICENSE.txt) file for details
+## 📜 License
+
+This project is licensed under the GNU GPL v3.0 - see the [LICENSE.txt](https://raw.githubusercontent.com/johackim/rdcli/master/LICENSE.txt) file for details
 
 **Free Software, Hell Yeah!**

@@ -1,84 +1,46 @@
-import url from 'url';
-import progress from 'request-progress';
-import humanize from 'humanize';
-import fs from 'fs';
-import debug from 'debug';
-import request from 'request';
-import ora from 'ora';
-import config from 'config';
+import fs from 'node:fs';
+import { Readable } from 'node:stream';
+import { pipeline } from 'node:stream/promises';
+import { setTimeout as sleep } from 'node:timers/promises';
+import { MAX_RETRIES, MIN_FILESIZE, PROGRESS_INTERVAL, RETRY_DELAY } from './constants.js';
+import { formatProgress, getFilename, getPageError } from './utils.js';
 
-const log = debug('download');
+const saveFile = async (link, file, onProgress) => {
+    const res = await fetch(link);
+    const total = Number(res.headers.get('content-length'));
+    const startedAt = Date.now();
+    let transferred = 0;
 
-const MAX_RETRY = 5;
-const RETRY_DELAY = 30 * 1000;
-const MIN_FILESIZE = 3000;
-let retry = 0;
-let spinner;
+    const timer = setInterval(() => {
+        onProgress(formatProgress(transferred, total, (Date.now() - startedAt) / 1000));
+    }, PROGRESS_INTERVAL);
 
-export function* waitDuringScan(link) {
-    log(`scan anti-virus ${link}`);
-    const message = 'Please wait until the file has been scanned by our anti-virus';
-    if (!spinner) {
-        spinner = ora(message).start();
+    const body = Readable.fromWeb(res.body).on('data', (chunk) => {
+        transferred += chunk.length;
+    });
+
+    await pipeline(body, fs.createWriteStream(file)).finally(() => clearInterval(timer));
+};
+
+export const download = async (link, onProgress, retries = MAX_RETRIES) => {
+    const file = getFilename(link);
+
+    await saveFile(link, file, onProgress);
+
+    // Real-Debrid can answer 200 with a small HTML error page instead of the file.
+    const page = fs.statSync(file).size < MIN_FILESIZE ? fs.readFileSync(file, 'utf8') : '';
+
+    if (!/error|erreur/i.test(page)) return file;
+
+    if (!retries) {
+        const error = getPageError(page);
+
+        throw new Error(error ? `${error}\nContact us on https://real-debrid.com/support` : 'Download failed');
     }
 
-    const content = yield new Promise((resolve) => {
-        setTimeout(() => {
-            request(link, (error, response, body) => {
-                resolve(body);
-            });
-        }, config.requestDelay);
-    });
+    console.log(`Error, retry download in ${RETRY_DELAY / 1000}s...`);
 
-    if (content.match(new RegExp(message))) {
-        yield waitDuringScan(link);
-    } else {
-        spinner.stop();
-    }
-}
+    await sleep(RETRY_DELAY);
 
-export function download(link, callback) {
-    log(`download file ${link}`);
-    const filename = unescape(url.parse(link).pathname.split('/').pop());
-    const file = `${process.cwd()}/${filename}`;
-
-    const progressLink = progress(request(link), {
-        throttle: 2000,
-        delay: 1000,
-    });
-
-    progressLink.on('progress', state => callback({
-        percent: humanize.numberFormat(state.percent * 100, 1),
-        mbps: humanize.filesize(state.speed),
-        totalSize: humanize.filesize(state.size.total),
-        bytesWriting: humanize.filesize(state.size.transferred),
-        remaining: Math.round(state.time.remaining),
-    }));
-
-    progressLink.on('error', () => callback('error'));
-
-    progressLink.on('end', () => {
-        if (fs.statSync(file).size < MIN_FILESIZE &&
-            fs.readFileSync(file, 'utf8').match(/error|erreur/gi)) {
-            if (retry < MAX_RETRY) {
-                retry += 1;
-                console.log(`Error, retry download in ${RETRY_DELAY / 1000}s...`);
-                setTimeout(() => {
-                    download(link, callback);
-                }, RETRY_DELAY);
-            } else {
-                const message = fs.readFileSync(file, 'utf8').match(/danger">([^"]+)<\/div>/);
-                if (message) {
-                    const error = message[1].replace(/<br\/>/gi, '\n');
-                    console.log(`${error}\n`);
-                    console.log('Contact us on https://real-debrid.com/support');
-                }
-                callback('error');
-            }
-        } else {
-            callback('end');
-        }
-    });
-
-    progressLink.pipe(fs.createWriteStream(file));
-}
+    return download(link, onProgress, retries - 1);
+};

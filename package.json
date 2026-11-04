@@ -1,59 +1,26 @@
 {
   "name": "rdcli",
-  "version": "1.5.3",
+  "author": "johackim",
   "description": "A simple CLI tool to unrestrict links with real-debrid.com",
   "homepage": "https://github.com/johackim/rdcli",
+  "license": "GPL-3.0",
+  "version": "1.5.3",
+  "type": "module",
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "bin": {
+    "rdcli": "src/index.js"
+  },
+  "files": [
+    "src"
+  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/johackim/rdcli.git"
+    "url": "git+https://github.com/johackim/rdcli.git"
   },
   "bugs": {
     "url": "https://github.com/johackim/rdcli/issues"
-  },
-  "preferGlobal": true,
-  "scripts": {
-    "prepublishOnly": "make build",
-    "start": "NODE_ENV=dev ./node_modules/.bin/babel-node src/rdcli.js"
-  },
-  "bin": {
-    "rdcli": "build/rdcli.js"
-  },
-  "author": "johackim",
-  "license": "GPL-3.0",
-  "dependencies": {
-    "async-file": "^2.0.2",
-    "babel-polyfill": "^6.23.0",
-    "chai": "^3.5.0",
-    "chalk": "^1.1.3",
-    "co-prompt": "^1.0.0",
-    "commander": "^2.9.0",
-    "config": "^3.3.7",
-    "debug": "^2.6.3",
-    "fs": "^0.0.2",
-    "humanize": "^0.0.9",
-    "node-fetch": "^1.6.3",
-    "ora": "^1.2.0",
-    "request": "^2.81.0",
-    "request-progress": "^3.0.0",
-    "request-promise": "^4.2.0",
-    "sleep-promise": "^2.0.0",
-    "url": "^0.11.0"
-  },
-  "devDependencies": {
-    "babel-cli": "^6.24.0",
-    "babel-core": "^6.24.0",
-    "babel-preset-es2015": "^6.24.0",
-    "babel-preset-es2017": "^6.22.0",
-    "body-parser": "^1.17.1",
-    "child-process-promise": "^2.2.0",
-    "eslint": "^3.18.0",
-    "eslint-config-airbnb": "^14.1.0",
-    "eslint-plugin-import": "^2.2.0",
-    "eslint-plugin-jsx-a11y": "^4.0.0",
-    "eslint-plugin-react": "^6.10.3",
-    "json-server": "^0.9.6",
-    "mocha": "^3.2.0",
-    "np": "^2.13.0"
   },
   "keywords": [
     "real-debrid",
@@ -66,5 +33,29 @@
     "torrent",
     "magnet",
     "cli"
-  ]
+  ],
+  "scripts": {
+    "start": "node src/index.js",
+    "lint": "eslint .",
+    "test": "node --env-file=.env.test --experimental-vm-modules --no-warnings ./node_modules/.bin/jest -i"
+  },
+  "jest": {
+    "restoreMocks": true,
+    "transform": {}
+  },
+  "dependencies": {
+    "commander": "^15.0.0",
+    "enquirer": "^2.4.1",
+    "ora": "^10.0.0"
+  },
+  "devDependencies": {
+    "@eslint/compat": "^2.1.1",
+    "@eslint/eslintrc": "^3.3.7",
+    "eslint": "^10.14.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jest": "^29.17.0",
+    "globals": "^17.14.0",
+    "jest": "^30.5.2"
+  }
 }
