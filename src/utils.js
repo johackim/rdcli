@@ -1,31 +1,23 @@
-export default function handleErrorMessage(error) {
-    const errorCode = error.error_code;
+import { basename } from 'node:path';
 
-    switch (errorCode) {
-    case 1:
-        throw new Error('Missing parameter, invalid torrent ?');
-    case 5:
-        throw new Error('Login error, VPN ? Dedicated Server ?');
-    case 7:
-        throw new Error('Resource not found');
-    case 11:
-        throw new Error(`Two-factor authentication needed: ${error.error.verification_url}`);
-    case 12:
-        throw new Error('Invalid login');
-    case 13:
-        throw new Error('Invalid password');
-    case 16:
-        throw new Error('Unsupported hoster');
-    case 20:
-        throw new Error('Hoster not available for free users');
-    case 21:
-        throw new Error('Too many active downloads');
-    case 24:
-        throw new Error('Invalid link');
-    case 30:
-        throw new Error('Torrent file invalid');
-    default:
-        throw new Error(error.error);
-    }
-}
+const SIZE_UNITS = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
 
+export const formatSize = (bytes) => {
+    if (bytes < 1024) return `${Math.round(bytes)} bytes`;
+
+    const unit = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), SIZE_UNITS.length - 1);
+
+    return `${(bytes / 1024 ** unit).toFixed(2)} ${SIZE_UNITS[unit]}`;
+};
+
+export const formatProgress = (transferred, total, seconds) => {
+    const speed = transferred / seconds;
+    const percent = total ? (transferred / total) * 100 : 0;
+    const remaining = total ? Math.round((total - transferred) / speed) : 0;
+
+    return `Download: ${percent.toFixed(1)}% Speed: ${formatSize(speed)} ${formatSize(transferred)}/${formatSize(total)} Remaining: ${remaining}sec`;
+};
+
+export const getFilename = (link) => basename(decodeURIComponent(new URL(link).pathname));
+
+export const getPageError = (page) => page.match(/danger">([^"]+)<\/div>/)?.[1].replace(/<br\/>/gi, '\n');
